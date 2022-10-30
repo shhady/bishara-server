@@ -17,10 +17,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://eclectic-kitten-7d4c01.netlify.app/",
+    origin: "/",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
   },
 });
 import path from "path";
