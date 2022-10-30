@@ -17,9 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://eclectic-kitten-7d4c01.netlify.app/",
-    methods: ["GET", "POST"],
-    AccessControlAllowOrigin: "https://eclectic-kitten-7d4c01.netlify.app/",
+    origin: ["http://localhost:3000"],
   },
 });
 import path from "path";
