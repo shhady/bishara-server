@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["https://eclectic-kitten-7d4c01.netlify.app"],
   },
 });
 import path from "path";
@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("app is running");
+  res.send("backend is running");
 });
 // io.on("connection", () => {
 //   console.log("connected to websocket");
@@ -129,7 +129,7 @@ app.use(messageRouter);
 app.use(openconversationRouter);
 app.use(commentRouter);
 const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.vae8tj1.mongodb.net/?retryWrites=true&w=majority`;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>
