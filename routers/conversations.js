@@ -2,6 +2,14 @@ import express from "express";
 const router = express.Router();
 import Conversation from "../models/Conversation.js";
 
+router.get("/conversations", async (req, res) => {
+  try {
+    const Conversations = await Conversation.find({});
+    res.status(200).send(Conversations);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 router.post("/conversations", async (req, res) => {
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
