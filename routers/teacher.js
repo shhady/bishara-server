@@ -137,6 +137,36 @@ router.get("/teachers/:id", async (req, res) => {
   }
 });
 
+router.patch("/teachers/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdate = ["avatar"];
+  const isValidOperation = updates.every((update) => {
+    return allowedUpdate.includes(update);
+  });
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "invalid updates" });
+  }
+
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+
+    updates.forEach((update) => (teacher[update] = req.body[update]));
+    await teacher.save();
+    // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
+
+    if (!teacher) {
+      res.status(404).send();
+    }
+    res.send(teacher);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 router.patch("/teachers/me", auth, async (req, res) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
