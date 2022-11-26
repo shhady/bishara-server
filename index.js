@@ -129,7 +129,7 @@ app.use(conversationRouter);
 app.use(messageRouter);
 app.use(openconversationRouter);
 app.use(commentRouter);
-const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.vae8tj1.mongodb.net/?retryWrites=true&w=majority`;
+const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.a3by20b.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
