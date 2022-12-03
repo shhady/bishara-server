@@ -43,7 +43,7 @@ router.get("/courses/:id", async (req, res) => {
 
 router.patch("/courses/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdate = ["instrument", "likes", "videos"];
+  const allowedUpdate = ["instrument", "likes", "videos", "description"];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
   });
