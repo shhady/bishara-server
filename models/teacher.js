@@ -39,6 +39,7 @@ const teacherSchema = mongoose.Schema(
       },
     ],
     avatar: { type: String },
+    cover: { type: String },
     about: { type: String },
   },
 

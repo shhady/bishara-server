@@ -139,7 +139,7 @@ router.get("/teachers/:id", async (req, res) => {
 
 router.patch("/teachers/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdate = ["avatar", "role"];
+  const allowedUpdate = ["avatar", "role", "cover"];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
   });
