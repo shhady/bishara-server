@@ -20,6 +20,7 @@ const courseSchema = mongoose.Schema(
     avatar: { type: String },
     description: { type: String },
     playlistId: { type: String },
+    coursePhoto: { type: String },
     instrument: { type: String, required: true },
     level: { type: String, required: true },
     videos: [
