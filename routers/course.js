@@ -49,6 +49,7 @@ router.patch("/courses/:id", async (req, res) => {
     "videos",
     "description",
     "coursePhoto",
+    "title",
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);

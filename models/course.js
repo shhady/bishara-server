@@ -21,6 +21,7 @@ const courseSchema = mongoose.Schema(
     description: { type: String },
     playlistId: { type: String },
     coursePhoto: { type: String },
+    title: { type: String },
     instrument: { type: String, required: true },
     level: { type: String, required: true },
     videos: [
