@@ -24,14 +24,14 @@ router.get("/comments", async (req, res) => {
 router.put("/comments/:id", async (req, res) => {
   const replyToDelete = req.body.replyToDelete;
   // console.log(replyToDelete);
-  const courseToupdate = await Course.findOneAndUpdate(
+  const commentToupdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { replies: { reply: replyToDelete } } }
   );
-  await courseToupdate.save();
+  await commentToupdate.save();
   // console.log(firstName);
 
-  res.status(200).send(courseToupdate);
+  res.status(200).send(commentToupdate);
 });
 
 router.patch("/comments/:id", async (req, res) => {
