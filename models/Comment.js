@@ -4,6 +4,7 @@ const CommentSchema = mongoose.Schema(
   {
     userid: { type: String },
     theCourse: { type: String },
+    userAvatar: { type: String },
     courseId: { type: String },
     courseOwnerId: { type: String },
     videoName: { type: String },
