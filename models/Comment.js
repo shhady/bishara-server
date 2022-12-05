@@ -12,7 +12,7 @@ const CommentSchema = mongoose.Schema(
     lastName: { type: String },
     comment: { type: String },
     read: { type: Boolean },
-    replies: [{ type: Object }],
+    // replies: [{ type: Object }],
   },
   {
     timestamps: true,

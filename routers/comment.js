@@ -21,18 +21,6 @@ router.get("/comments", async (req, res) => {
     res.status(500).send(error);
   }
 });
-// router.put("/comments/:id", async (req, res) => {
-//   const replyToDelete = req.body.replyToDelete;
-//   // console.log(replyToDelete);
-//   const commentToupdate = await Comment.findOneAndUpdate(
-//     { _id: req.params.id },
-//     { $pull: { replies: { reply: replyToDelete } } }
-//   );
-//   await commentToupdate.save();
-//   // console.log(firstName);
-
-//   res.status(200).send(commentToupdate);
-// });
 
 router.patch("/comments/:id", async (req, res) => {
   const updates = Object.keys(req.body);
