@@ -23,10 +23,10 @@ router.get("/comments", async (req, res) => {
 });
 router.put("/comments/:id", async (req, res) => {
   const replyToDelete = req.body.replyToDelete;
-  // console.log(videoId);
+  // console.log(replyToDelete);
   const courseToupdate = await Course.findOneAndUpdate(
     { _id: req.params.id },
-    { $pull: { replies: { _id: replyToDelete } } }
+    { $pull: { replies: { reply: replyToDelete } } }
   );
   await courseToupdate.save();
   // console.log(firstName);
