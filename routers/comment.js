@@ -21,6 +21,18 @@ router.get("/comments", async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.put("/comments/:id", async (req, res) => {
+  const replyToDelete = req.body.replyToDelete;
+  // console.log(videoId);
+  const courseToupdate = await Course.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { replies: { _id: replyToDelete } } }
+  );
+  await courseToupdate.save();
+  // console.log(firstName);
+
+  res.status(200).send(courseToupdate);
+});
 
 router.patch("/comments/:id", async (req, res) => {
   const updates = Object.keys(req.body);
