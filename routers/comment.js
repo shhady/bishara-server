@@ -56,10 +56,28 @@ router.put("/comments/:id", async (req, res) => {
   const reply = req.body.reply;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
+  const userAvatar = req.body.userAvatar;
+  const courseId = req.body.courseId;
+  const PlayListId = req.body.PlayListId;
+  const videoId = req.body.videoId;
+  const userId = req.body.userId;
   console.log(reply);
   const replyUpdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
-    { $push: { replies: { reply, firstName, lastName } } }
+    {
+      $push: {
+        replies: {
+          reply,
+          firstName,
+          lastName,
+          userAvatar,
+          courseId,
+          PlayListId,
+          videoId,
+          userId,
+        },
+      },
+    }
   );
   await replyUpdate.save();
   // console.log(firstName);
