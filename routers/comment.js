@@ -86,7 +86,7 @@ router.put("/comments/:id", async (req, res) => {
   res.status(200).send(replyUpdate);
 });
 
-router.delete("/comment/reply/:id", async (req, res) => {
+router.put("/comment/reply/:id", async (req, res) => {
   const replyId = req.body.replyId;
   // console.log(videoId);
   const commentToupdate = await Comment.findOneAndUpdate(
