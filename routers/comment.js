@@ -61,12 +61,14 @@ router.put("/comments/:id", async (req, res) => {
   const PlayListId = req.body.PlayListId;
   const videoId = req.body.videoId;
   const userId = req.body.userId;
+  const replyId = req.body.replyId;
   console.log(reply);
   const replyUpdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
     {
       $push: {
         replies: {
+          replyId,
           reply,
           firstName,
           lastName,
@@ -82,6 +84,19 @@ router.put("/comments/:id", async (req, res) => {
   await replyUpdate.save();
   // console.log(firstName);
   res.status(200).send(replyUpdate);
+});
+
+router.put("/comments/:id", async (req, res) => {
+  const replyId = req.body.replyId;
+  // console.log(videoId);
+  const courseToupdate = await Comment.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { replies: { _id: replyId } } }
+  );
+  await courseToupdate.save();
+  // console.log(firstName);
+
+  res.status(200).send(courseToupdate);
 });
 
 router.delete("/comments/:id", async (req, res) => {
