@@ -88,7 +88,7 @@ router.put("/comments/:id", async (req, res) => {
 
 router.put("/comment/reply/:id", async (req, res) => {
   const replyId = req.body.replyId;
-  // console.log(videoId);
+  console.log(replyId);
   const commentToupdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
     { $pull: { replies: { replyId: replyId } } }
@@ -96,7 +96,7 @@ router.put("/comment/reply/:id", async (req, res) => {
   await commentToupdate.save();
   // console.log(firstName);
 
-  res.status(200).send(commentToupdate);
+  res.status(200).send({ commentToupdate, clg: "console" + replyId });
 });
 // router.put("comments/:id/:id", async (req, res) => {
 //   const { commentId, replyId } = req.params;
