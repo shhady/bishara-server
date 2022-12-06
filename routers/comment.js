@@ -106,7 +106,7 @@ router.put(
     const updatedComment = await Comment.findByIdAndUpdate(
       commentId,
 
-      { $pull: { "replies.$.replyId": replyId } },
+      { $pull: { "replies.replyId": replyId } },
 
       { new: true }
     );
