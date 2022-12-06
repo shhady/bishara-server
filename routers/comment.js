@@ -86,18 +86,34 @@ router.put("/comments/:id", async (req, res) => {
   res.status(200).send(replyUpdate);
 });
 
-router.put("/comments/:id", async (req, res) => {
-  const replyId = req.body.replyId;
-  // console.log(videoId);
-  const courseToupdate = await Comment.findOneAndUpdate(
-    { _id: req.params.id },
-    { $pull: { replies: { _id: replyId } } }
-  );
-  await courseToupdate.save();
-  // console.log(firstName);
+// router.put("/comments/:id/:id", async (req, res) => {
+//   const replyId = req.body.replyId;
+//   // console.log(videoId);
+//   const courseToupdate = await Comment.findOneAndUpdate(
+//     { _id: req.params.id },
+//     { $pull: { replies: { _id: replyId } } }
+//   );
+//   await courseToupdate.save();
+//   // console.log(firstName);
 
-  res.status(200).send(courseToupdate);
-});
+//   res.status(200).send(courseToupdate);
+// });
+router.put(
+  "/:Commentid/:ReplyId",
+  catchAsync(async (req, res) => {
+    const { commentId, replyId } = req.params;
+
+    const updatedComment = await Comment.findByIdAndUpdate(
+      commentId,
+
+      { $pull: { "replies.$.replyId": replyId } },
+
+      { new: true }
+    );
+
+    res.send({ updatedComment });
+  })
+);
 
 router.delete("/comments/:id", async (req, res) => {
   try {
