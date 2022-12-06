@@ -91,7 +91,7 @@ router.put("/comment/reply/:id", async (req, res) => {
   console.log(replyId);
   const commentToupdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
-    { $pull: { replies: { replyId: replyId } } }
+    { $pullAll: { replies: [{ replyId: replyId }] } }
   );
   await commentToupdate.save();
   // console.log(firstName);
