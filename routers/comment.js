@@ -91,12 +91,12 @@ router.put("/comment/reply/:id", async (req, res) => {
   console.log(replyId);
   const commentToupdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
-    { $pull: { replies: [{ replyId: replyId }] } }
+    { $pull: { replies: { _id: replyId } } }
   );
   await commentToupdate.save();
   // console.log(firstName);
 
-  res.status(200).send({ commentToupdate, clg: "console" + replyId });
+  res.status(200).send(commentToupdate);
 });
 // router.put("comments/:id/:id", async (req, res) => {
 //   const { commentId, replyId } = req.params;
