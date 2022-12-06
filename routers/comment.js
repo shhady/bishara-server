@@ -98,22 +98,20 @@ router.put("/comments/:id", async (req, res) => {
 
 //   res.status(200).send(courseToupdate);
 // });
-router.put(
-  "/:Commentid/:ReplyId",
-  catchAsync(async (req, res) => {
-    const { commentId, replyId } = req.params;
+router.put("comments/:id/:id", async (req, res) => {
+  const { commentId, replyId } = req.params;
 
-    const updatedComment = await Comment.findByIdAndUpdate(
-      commentId,
+  const updatedComment = await Comment.findByIdAndUpdate(
+    commentId,
 
-      { $pull: { "replies.replyId": replyId } },
+    { $pull: { "replies.replyId": replyId } },
 
-      { new: true }
-    );
+    { new: true }
+  );
+  await updatedComment.save();
 
-    res.send({ updatedComment });
-  })
-);
+  res.send({ updatedComment });
+});
 
 router.delete("/comments/:id", async (req, res) => {
   try {
