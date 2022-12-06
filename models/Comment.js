@@ -12,6 +12,7 @@ const CommentSchema = mongoose.Schema(
     lastName: { type: String },
     comment: { type: String },
     read: { type: Boolean },
+    playlistId: { type: String },
     replies: [{ type: Object }],
   },
   {

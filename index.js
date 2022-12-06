@@ -43,22 +43,22 @@ const addUser = (userId, socketId) => {
   !users.some((user) => user.userId === userId) &&
     users.push({ userId, socketId });
 };
-console.log(users);
+// console.log(users);
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 const getUser = (userId) => {
   const selected = users.find((user) => user.userId == userId);
-  console.log(selected + "nowselected");
+  // console.log(selected + "nowselected");
   return selected;
 };
 
 io.on("connection", (socket) => {
-  console.log("user connected");
+  // console.log("user connected");
 
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    console.log(users);
+    // console.log(users);
     io.emit("getUsers", users);
   });
   socket.on(
@@ -73,11 +73,11 @@ io.on("connection", (socket) => {
       courseid,
     }) => {
       const user = getUser(receiverId);
-      console.log(receiverId);
-      console.log(senderId);
-      console.log(senderName);
-      console.log(videoName);
-      console.log(user);
+      // console.log(receiverId);
+      // console.log(senderId);
+      // console.log(senderName);
+      // console.log(videoName);
+      // console.log(user);
 
       // console.log(io.sockets.manager.roomClient[user.socketId]);
       io.to(user?.socketId).emit("getNotificationComment", {
@@ -101,7 +101,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("disconnected");
+    // console.log("disconnected");
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
