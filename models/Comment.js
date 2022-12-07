@@ -15,6 +15,7 @@ const CommentSchema = mongoose.Schema(
     videoTitle: { type: String },
     playlistId: { type: String },
     lesson: { type: Object },
+    courseDetails: { type: Object },
     replies: [{ type: Object }],
   },
   {
