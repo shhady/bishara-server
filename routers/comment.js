@@ -24,7 +24,7 @@ router.get("/comments", async (req, res) => {
 
 router.patch("/comments/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdate = ["read"];
+  const allowedUpdate = ["read", "replyRead"];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
   });
