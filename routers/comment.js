@@ -62,12 +62,16 @@ router.put("/comments/:id", async (req, res) => {
   const videoId = req.body.videoId;
   const userId = req.body.userId;
   const replyId = req.body.replyId;
+  const lesson = req.body.lesson;
+  const courseDetails = req.body.courseDetails;
   console.log(reply);
   const replyUpdate = await Comment.findOneAndUpdate(
     { _id: req.params.id },
     {
       $push: {
         replies: {
+          courseDetails,
+          lesson,
           replyId,
           reply,
           firstName,
