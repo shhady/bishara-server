@@ -139,13 +139,7 @@ router.get("/teachers/:id", async (req, res) => {
 
 router.patch("/teachers/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdate = [
-    "avatar",
-    "role",
-    "cover",
-    "password",
-    "confirmPassword",
-  ];
+  const allowedUpdate = ["avatar", "role", "cover"];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
   });
@@ -153,9 +147,6 @@ router.patch("/teachers/:id", async (req, res) => {
   if (!isValidOperation) {
     return res.status(400).send({ error: "invalid updates" });
   }
-
-  if (password !== confirmPassword)
-    return res.status(404).json({ message: "passwords don't match" });
 
   try {
     const teacher = await Teacher.findById(req.params.id);
