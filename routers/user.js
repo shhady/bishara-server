@@ -99,6 +99,7 @@ router.patch("/users/me", auth, async (req, res) => {
     "password",
     "confirmPassword",
     "instrument",
+    "avatar",
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
