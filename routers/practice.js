@@ -69,6 +69,7 @@ router.put("/practices/:id", async (req, res) => {
   const courseId = req.body.courseId;
   const nameOfProblem = req.body.nameOfProblem;
   const practiceId = req.body.practiceId;
+  const uniqueLink = req.body.uniqueLink;
   try {
     const videoReply = await Practice.findOneAndUpdate(
       { _id: req.params.id },
@@ -80,6 +81,7 @@ router.put("/practices/:id", async (req, res) => {
             courseId,
             nameOfProblem,
             practiceId,
+            uniqueLink,
           },
         },
       }
