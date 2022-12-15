@@ -20,7 +20,7 @@ const practiceSchema = mongoose.Schema(
     video: { type: String },
     myPractice: { type: String },
     reply: { type: String },
-    videoReply: { type: String },
+    videoReply: [{ type: Object }],
   },
   {
     timestamps: true,

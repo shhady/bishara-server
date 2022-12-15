@@ -63,6 +63,32 @@ router.get("/practices/:id", auth, async (req, res) => {
   }
 });
 
+router.put("/practice/:id", async (req, res) => {
+  const theVideoReply = req.body.theVideoReply;
+  const videoName = req.body.videoName;
+  const courseId = req.body.courseId;
+  const nameOfProblem = req.body.nameOfProblem;
+  const practiceId = req.body.practiceId;
+  console.log(reply);
+  const videoReply = await Practice.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $push: {
+        videoReply: {
+          theVideoReply,
+          videoName,
+          courseId,
+          nameOfProblem,
+          practiceId,
+        },
+      },
+    }
+  );
+  await videoReply.save();
+  // console.log(firstName);
+  res.status(200).send(videoReply);
+});
+
 router.patch("/practices/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdate = ["videos", "reply", "videoReply"];
