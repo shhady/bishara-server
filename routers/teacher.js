@@ -94,7 +94,7 @@ router.patch("/teachers/changepassword"),
     try {
       const teacher = await Teacher.findByCredentials(
         req.body.email,
-        req.body.password
+        req.body.Oldpassword
       );
       // const token = await teacher.generateAuthToken();
       updates.forEach((update) => (teacher[update] = req.body[update]));
