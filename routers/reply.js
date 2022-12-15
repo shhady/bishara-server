@@ -14,9 +14,22 @@ router.post("/replies", (req, res) => {
   }
 });
 
+router.get("/replies/:id", async (req, res) => {
+  const teacherId = req.params.teacherId;
+  try {
+    const replies = await Reply.findByCredentials({ teacherId }).sort({
+      createdAt: -1,
+    });
+    res.status(200).send(replies);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 router.get("/replies", async (req, res) => {
   try {
-    const replies = await Reply.find({}).sort({ createdAt: -1 });
+    const replies = await Reply.find({}).sort({
+      createdAt: -1,
+    });
     res.status(200).send(replies);
   } catch (error) {
     res.status(500).send(error);

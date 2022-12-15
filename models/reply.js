@@ -7,6 +7,7 @@ const ReplySchema = mongoose.Schema({
   nameOfProblem: { type: String },
   practiceId: { type: String },
   uniqueLink: { type: String },
+  teacherId: { type: String },
 });
 
 export default mongoose.model("Reply", ReplySchema);
