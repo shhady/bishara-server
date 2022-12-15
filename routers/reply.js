@@ -16,8 +16,10 @@ router.post("/replies", (req, res) => {
 
 router.get("/replies/:id", async (req, res) => {
   const teacherId = req.params.teacherId;
+  res.send(teacherId);
+
   try {
-    const replies = await Reply.findByCredentials(teacherId);
+    const replies = await Reply.findByCredentials(req.params.teacherId);
     res.status(200).send(replies);
   } catch (error) {
     res.status(500).send(error);
