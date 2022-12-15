@@ -10,6 +10,7 @@ import conversationRouter from "./routers/conversations.js";
 import messageRouter from "./routers/messages.js";
 import openconversationRouter from "./routers/openConversations.js";
 import commentRouter from "./routers/comment.js";
+import replyRouter from "./routers/reply.js";
 import http from "http";
 import { Server } from "socket.io";
 
@@ -129,6 +130,7 @@ app.use(conversationRouter);
 app.use(messageRouter);
 app.use(openconversationRouter);
 app.use(commentRouter);
+app.use(replyRouter);
 const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.a3by20b.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
 mongoose
