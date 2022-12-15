@@ -75,6 +75,41 @@ router.post("/teachers", async (req, res) => {
 //   }
 // });
 
+router.patch("/teachers/changepassword"),
+  async (req, res) => {
+    const updates = Object.keys(req.body);
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const allowedUpdate = ["password", "confirmPassword"];
+    const isValidOperation = updates.every((update) => {
+      return allowedUpdate.includes(update);
+    });
+
+    if (!isValidOperation) {
+      return res.status(400).send({ error: "invalid updates" });
+    }
+    if (password !== confirmPassword)
+      return res.status(404).json({ message: "passwords don't match" });
+
+    try {
+      const teacher = await Teacher.findByCredentials(
+        req.body.email,
+        req.body.password
+      );
+      // const token = await teacher.generateAuthToken();
+      updates.forEach((update) => (teacher[update] = req.body[update]));
+      await teacher.save();
+
+      if (!teacher) {
+        res.status(404).send();
+      }
+      res.send(teacher);
+      res.status(200).send({ teacher, token });
+    } catch (error) {
+      res.status(400).send("invalid email or password");
+    }
+  };
+
 router.post("/teachers/login", async (req, res) => {
   try {
     const teacher = await Teacher.findByCredentials(
