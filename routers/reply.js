@@ -28,7 +28,9 @@ router.get("/replies/:id", async (req, res) => {
   try {
     const replies = await Reply.findManyByTeacherId(teacherId);
     console.log(`Found ${replies.length} replies for teacherId ${teacherId}`);
-    res.status(200).send(replies);
+    res
+      .status(200)
+      .send({ replies: replies, length: replies.length, teacherId: teacherId });
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
