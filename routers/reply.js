@@ -14,15 +14,27 @@ router.post("/replies", (req, res) => {
   }
 });
 
+// router.get("/replies/:id", async (req, res) => {
+//   const teacherId = req.params.teacherId;
+//   try {
+//     const replies = await Reply.findManyByTeacherId(req.params.teacherId);
+//     res.status(200).send(replies);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
 router.get("/replies/:id", async (req, res) => {
   const teacherId = req.params.teacherId;
   try {
-    const replies = await Reply.findManyByTeacherId(req.params.teacherId);
+    const replies = await Reply.findManyByTeacherId(teacherId);
+    console.log(`Found ${replies.length} replies for teacherId ${teacherId}`);
     res.status(200).send(replies);
   } catch (error) {
+    console.error(error);
     res.status(500).send(error);
   }
 });
+
 router.get("/replies", async (req, res) => {
   try {
     const replies = await Reply.find({}).sort({
