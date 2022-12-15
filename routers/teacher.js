@@ -147,6 +147,7 @@ router.patch("/teachers/:id", async (req, res) => {
     "cover",
     "password",
     "confirmPassword",
+    "about",
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
