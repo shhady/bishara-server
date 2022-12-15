@@ -190,7 +190,7 @@ router.patch("/teachers/me", auth, async (req, res) => {
   if (!isValidOperation) {
     return res
       .status(400)
-      .send(req.body.password, { error: "invalid updates" });
+      .send({ password: req.body.password, error: "invalid updates" });
   }
 
   if (password !== confirmPassword)
