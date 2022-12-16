@@ -32,6 +32,9 @@ const practiceSchema = mongoose.Schema(
     },
   },
   {
+    validateBeforeSave: true,
+  },
+  {
     timestamps: true,
   }
 );
