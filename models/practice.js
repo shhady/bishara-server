@@ -24,8 +24,8 @@ const practiceSchema = mongoose.Schema(
     videoReply: {
       type: [{ type: Object }],
       validate: {
-        validator: function (arr) {
-          return arr.length <= 3;
+        validator: function (x, y, z) {
+          return !(this.videoReply.length > 3);
         },
         message: "Number of replies exceeded the limit of 3",
       },
