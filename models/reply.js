@@ -4,7 +4,7 @@ const ReplySchema = mongoose.Schema({
   theVideoReply: { type: String },
   videoName: { type: String },
   courseId: { type: String },
-  nameOfProblem: { type: String },
+  nameOfProblem: { type: String, required: true },
   practiceId: { type: String },
   uniqueLink: { type: String },
   teacherId: { type: String },

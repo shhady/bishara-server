@@ -21,7 +21,15 @@ const practiceSchema = mongoose.Schema(
     myPractice: { type: String },
     reply: { type: String },
     uniqueLink: { type: String },
-    videoReply: [{ type: Object }],
+    videoReply: {
+      type: [{ type: Object }],
+      validate: {
+        validator: function (arr) {
+          return arr.length <= 4;
+        },
+        message: "Number of replies exceeded the limit of 4",
+      },
+    },
   },
   {
     timestamps: true,
