@@ -17,7 +17,7 @@ router.post("/replies", (req, res) => {
 router.get("/replies/:id", async (req, res) => {
   const teacherId = req.params.teacherId;
   try {
-    const replies = await Reply.find({ teacherId: req.params.teacherId });
+    const replies = await Reply.find({ teacherId: req.params.id });
     res.status(200).send(replies);
   } catch (error) {
     res.status(500).send(error);
