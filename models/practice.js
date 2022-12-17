@@ -23,20 +23,14 @@ const practiceSchema = mongoose.Schema(
     uniqueLink: { type: String },
     videoReply: {
       type: [{ type: Object }],
-      validate: {
-        validator: function (x, y, z) {
-          return !(this.videoReply.length > 3);
-        },
-        message: "Number of replies exceeded the limit of 3",
-      },
     },
-  },
-  {
-    validateBeforeSave: true,
   },
   {
     timestamps: true,
   }
 );
 
+practiceSchema.path("videoReply").validate(function (v) {
+  return v.length < 2;
+});
 export default mongoose.model("Practice", practiceSchema);
