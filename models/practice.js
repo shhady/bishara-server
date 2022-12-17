@@ -23,6 +23,11 @@ const practiceSchema = mongoose.Schema(
     uniqueLink: { type: String },
     videoReply: {
       type: [{ type: Object }],
+      validate(videoReply) {
+        if (videoReply.length > 4) {
+          throw new Error("max four replies");
+        }
+      },
     },
   },
   {
@@ -30,7 +35,13 @@ const practiceSchema = mongoose.Schema(
   }
 );
 
-practiceSchema.path("videoReply").validate(function (v) {
-  return v.length < 2;
-});
+// practiceSchema.path("videoReply").validate(function (v) {
+//   return v.length < 4;
+// });
+// practiceSchema.path("videoReply").validate(function (v) {
+//   // Previous validation function goes here
+//   // Return true if the value is valid, false otherwise
+// }, function (v) {
+//   return v.length < 4;
+// });
 export default mongoose.model("Practice", practiceSchema);
