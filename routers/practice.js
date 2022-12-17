@@ -63,6 +63,16 @@ router.get("/practices/:id", auth, async (req, res) => {
   }
 });
 
+router.get("/mypractices/:id", async (req, res) => {
+  const teacherId = req.params.teacherId;
+  try {
+    const practices = await Practice.find({ teacherId: req.params.id });
+    res.status(200).send(practices);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // router.put("/practices/:id", async (req, res) => {
 //   const theVideoReply = req.body.theVideoReply;
 //   const videoName = req.body.videoName;
