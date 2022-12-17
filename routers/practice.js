@@ -63,6 +63,38 @@ router.get("/practices/:id", auth, async (req, res) => {
   }
 });
 
+// router.put("/practices/:id", async (req, res) => {
+//   const theVideoReply = req.body.theVideoReply;
+//   const videoName = req.body.videoName;
+//   const courseId = req.body.courseId;
+//   const nameOfProblem = req.body.nameOfProblem;
+//   const practiceId = req.body.practiceId;
+//   const uniqueLink = req.body.uniqueLink;
+//   const teacherId = req.body.teacherId;
+//   try {
+//     const videoReply = await Practice.findOneAndUpdate(
+//       { _id: req.params.id },
+//       {
+//         $push: {
+//           videoReply: {
+//             theVideoReply,
+//             videoName,
+//             courseId,
+//             nameOfProblem,
+//             practiceId,
+//             uniqueLink,
+//             teacherId,
+//           },
+//         },
+//       }
+//     );
+//     await videoReply.save();
+//     // console.log(firstName);
+//     res.status(200).send(videoReply);
+//   } catch (error) {
+//     res.status(404).send(error);
+//   }
+// });
 router.put("/practices/:id", async (req, res) => {
   const theVideoReply = req.body.theVideoReply;
   const videoName = req.body.videoName;
@@ -88,6 +120,9 @@ router.put("/practices/:id", async (req, res) => {
         },
       }
     );
+    if (videoReply.videoReply.length >= 4) {
+      return res.status(400).send({ error: "max four replies" });
+    }
     await videoReply.save();
     // console.log(firstName);
     res.status(200).send(videoReply);
