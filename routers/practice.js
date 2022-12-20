@@ -72,6 +72,15 @@ router.get("/mypractices/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get("/studentpractices/:id", async (req, res) => {
+  const ownerId = req.params.ownerId;
+  try {
+    const practices = await Practice.find({ ownerId: req.params.id });
+    res.status(200).send(practices);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 // router.put("/practices/:id", async (req, res) => {
 //   const theVideoReply = req.body.theVideoReply;
