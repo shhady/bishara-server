@@ -126,6 +126,7 @@ router.put("/practices/:id", async (req, res) => {
   const practiceId = req.body.practiceId;
   const uniqueLink = req.body.uniqueLink;
   const teacherId = req.body.teacherId;
+  const replyId = req.body.replyId;
   try {
     const videoReply = await Practice.findOneAndUpdate(
       { _id: req.params.id },
@@ -139,6 +140,7 @@ router.put("/practices/:id", async (req, res) => {
             practiceId,
             uniqueLink,
             teacherId,
+            replyId,
           },
         },
       }
@@ -152,6 +154,18 @@ router.put("/practices/:id", async (req, res) => {
   } catch (error) {
     res.status(404).send(error);
   }
+});
+
+router.put("/practice/videoReply/:id", async (req, res) => {
+  const replyId = req.body.replyId;
+  console.log(replyId);
+  const practiceToUpdate = await Practice.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { videoReply: { replyId: replyId } } }
+  );
+  await practiceToUpdate.save();
+
+  res.status(200).send({ practiceToUpdate, replyId });
 });
 
 router.patch("/practices/:id", async (req, res) => {
