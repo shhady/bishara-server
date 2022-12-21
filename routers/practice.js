@@ -147,10 +147,11 @@ router.put("/practices/:id", async (req, res) => {
     );
     if (videoReply.length >= 4) {
       return res.status(400).send({ error: "max four replies" });
+    } else {
+      await videoReply.save();
+      // console.log(firstName);
+      res.status(200).send(videoReply);
     }
-    await videoReply.save();
-    // console.log(firstName);
-    res.status(200).send(videoReply);
   } catch (error) {
     res.status(404).send(error);
   }
