@@ -224,7 +224,7 @@ router.patch("/teachers/me", auth, async (req, res) => {
   }
 });
 
-router.delete("/teachers/me", auth, async (req, res) => {
+router.delete("/teachers/:id", async (req, res) => {
   try {
     // const teacher = await Teacher.findByIdAndDelete(req.teacher._id);
 
