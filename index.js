@@ -6,6 +6,8 @@ import userRouter from "./routers/user.js";
 import teacherRouter from "./routers/teacher.js";
 import courseRouter from "./routers/course.js";
 import practiceRouter from "./routers/practice.js";
+import fileRouter from "./routers/file.js";
+
 import conversationRouter from "./routers/conversations.js";
 import messageRouter from "./routers/messages.js";
 import openconversationRouter from "./routers/openConversations.js";
@@ -126,6 +128,7 @@ app.use(userRouter);
 app.use(teacherRouter);
 app.use(courseRouter);
 app.use(practiceRouter);
+app.use(fileRouter);
 app.use(conversationRouter);
 app.use(messageRouter);
 app.use(openconversationRouter);
