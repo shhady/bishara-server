@@ -226,13 +226,16 @@ router.patch("/teachers/me", auth, async (req, res) => {
 
 router.delete("/teachers/:id", async (req, res) => {
   try {
-    const teacher = await Teacher.findByIdAndDelete(req.teacher._id);
+    const teacher = await Teacher.findByIdAndDelete({
+      _id: req.params.id,
+      // owner: req.user._id,
+    });
 
     if (!teacher) {
       return res.status(404).send();
     }
-    await req.teacher.remove();
-    res.send(req.teacher);
+    // await req.teacher.remove();
+    res.send(teacher);
   } catch (error) {
     res.status(500).send(error);
   }
