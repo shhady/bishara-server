@@ -86,6 +86,36 @@ router.get("/studentpractices/:id", async (req, res) => {
   }
 });
 
+router.patch("/studentpractices/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdate = ["replySeen"];
+  const isValidOperation = updates.every((update) => {
+    return allowedUpdate.includes(update);
+  });
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "invalid updates" });
+  }
+
+  try {
+    // const teacher = await Teacher.findById(req.params.id);
+
+    updates.forEach((update) => (req.practice[update] = req.body[update]));
+    await req.practice.save();
+    // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
+
+    // if (!practice) {
+    //   res.status(404).send();
+    // }
+    res.send(req.practice);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 // router.put("/practices/:id", async (req, res) => {
 //   const theVideoReply = req.body.theVideoReply;
 //   const videoName = req.body.videoName;
