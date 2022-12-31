@@ -87,31 +87,22 @@ router.get("/studentpractices/:id", async (req, res) => {
 });
 
 router.patch("/studentpractices/:id", async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdate = ["replySeen"];
-  const isValidOperation = updates.every((update) => {
-    return allowedUpdate.includes(update);
-  });
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: "invalid updates" });
-  }
-
   try {
-    const practice = await Practice.findById(req.params.id);
+    // Find the Practice object with the specified ID and update it with the new values from the request body
+    const practice = await Practice.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // Return the updated document
+      runValidators: true, // Run the validators on the update
+    });
 
-    updates.forEach((update) => (practice[update] = req.body[update]));
-    await req.practice.save();
-    // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
+    // If the Practice object was not found, return a 404 status code
+    if (!practice) {
+      return res.status(404).send();
+    }
 
-    // if (!practice) {
-    //   res.status(404).send();
-    // }
-    res.send(req.practice);
+    // Send the updated Practice object as the response
+    res.send(practice);
   } catch (error) {
+    // If an error occurred, return a 400 status code
     res.status(400).send(error);
   }
 });
