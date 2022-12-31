@@ -20,6 +20,7 @@ const practiceSchema = mongoose.Schema(
     video: { type: String },
     myPractice: { type: String },
     reply: { type: String },
+    replySeen: { type: String, default: false },
     uniqueLink: { type: String },
     videoReply: {
       type: [{ type: Object }],
