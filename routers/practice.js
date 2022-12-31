@@ -98,9 +98,9 @@ router.patch("/studentpractices/:id", async (req, res) => {
   }
 
   try {
-    // const teacher = await Teacher.findById(req.params.id);
+    const practice = await Practice.findById(req.params.id);
 
-    updates.forEach((update) => (req.practice[update] = req.body[update]));
+    updates.forEach((update) => (practice[update] = req.body[update]));
     await req.practice.save();
     // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
     //   new: true,
