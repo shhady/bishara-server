@@ -9,9 +9,11 @@ import mongoose from "mongoose";
 // export default mongoose.model("User", userSchema);
 const MessageSchema = mongoose.Schema(
   {
+    // in his example is was chatId:{type:String}, i did it conversationId
     conversationId: {
       type: String,
     },
+    // he used senderId i used sender
     sender: {
       type: String,
     },
