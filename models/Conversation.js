@@ -10,8 +10,8 @@ import mongoose from "mongoose";
 const ConversationSchema = mongoose.Schema(
   {
     members: { type: Array },
-    senderReceiver: { type: String, unique: true },
-    receiverSender: { type: String, unique: true },
+    senderReceiver: { type: String },
+    receiverSender: { type: String },
     lastUpdated: { type: String },
     seen: { type: String },
   },
@@ -20,4 +20,8 @@ const ConversationSchema = mongoose.Schema(
   }
 );
 
+ConversationSchema.index(
+  { senderReceiver: 1, receiverSender: 1 },
+  { unique: true }
+);
 export default mongoose.model("Conversation", ConversationSchema);
