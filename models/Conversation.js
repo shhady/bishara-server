@@ -12,7 +12,16 @@ const ConversationSchema = mongoose.Schema(
     members: { type: Array },
   },
   {
-    uniqueConversation: { type: String },
+    senderReceiver: { type: String },
+  },
+  {
+    receiverSender: { type: String },
+  },
+  {
+    lastUpdated: { type: String },
+  },
+  {
+    seen: { type: String },
   },
   {
     timestamps: true,
