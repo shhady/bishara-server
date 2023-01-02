@@ -13,6 +13,10 @@ router.get("/conversations", async (req, res) => {
 router.post("/conversations", async (req, res) => {
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
+    seen: req.body.seen,
+    senderReceiver: req.body.senderReceiver,
+    receiverSender: req.body.receiverSender,
+    lastUpdated: req.body.lastUpdated,
   });
   console.log(newConversation);
   try {
