@@ -10,17 +10,9 @@ import mongoose from "mongoose";
 const ConversationSchema = mongoose.Schema(
   {
     members: { type: Array },
-  },
-  {
     senderReceiver: { type: String },
-  },
-  {
     receiverSender: { type: String },
-  },
-  {
     lastUpdated: { type: String },
-  },
-  {
     seen: { type: String },
   },
   {
