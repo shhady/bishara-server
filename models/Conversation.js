@@ -12,6 +12,9 @@ const ConversationSchema = mongoose.Schema(
     members: { type: Array },
   },
   {
+    uniqueConversation: { type: String },
+  },
+  {
     timestamps: true,
   }
 );
