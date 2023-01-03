@@ -14,6 +14,7 @@ const ConversationSchema = mongoose.Schema(
     receiverSender: { type: String },
     lastUpdated: { type: String },
     seen: { type: String },
+    showAtTeacher: { type: String, default: "false" },
   },
   {
     timestamps: true,
