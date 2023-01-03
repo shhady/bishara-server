@@ -52,4 +52,28 @@ router.get(
   }
 );
 
+router.patch("/conversations/:id", async (req, res) => {
+  try {
+    // Find the Practice object with the specified ID and update it with the new values from the request body
+    const conversation = await Conversation.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true, // Return the updated document
+        runValidators: true, // Run the validators on the update
+      }
+    );
+
+    // If the Practice object was not found, return a 404 status code
+    if (!conversation) {
+      return res.status(404).send();
+    }
+    // Send the updated Practice object as the response
+    res.send(conversation);
+  } catch (error) {
+    // If an error occurred, return a 400 status code
+    res.status(400).send(error);
+  }
+});
+
 export default router;
