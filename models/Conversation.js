@@ -13,7 +13,7 @@ const ConversationSchema = mongoose.Schema(
     senderReceiver: { type: String, unique: true },
     receiverSender: { type: String },
     lastUpdated: { type: String },
-    seen: { type: String },
+    seen: { type: String, default: "false" },
     showAtTeacher: { type: String, default: "false" },
   },
   {
