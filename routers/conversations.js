@@ -17,6 +17,7 @@ router.post("/conversations", async (req, res) => {
     senderReceiver: req.body.senderReceiver,
     receiverSender: req.body.receiverSender,
     lastUpdated: req.body.lastUpdated,
+    lastSender: req.body.lastSender,
   });
   console.log(newConversation);
   try {
