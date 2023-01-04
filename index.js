@@ -64,19 +64,33 @@ io.on("connection", (socket) => {
     // console.log(users);
     io.emit("getUsers", users);
   });
-  socket.on("sendNotificationComment", ({ comment }) => {
-    const user = getUser(receiverId);
-    // console.log(receiverId);
-    // console.log(senderId);
-    // console.log(senderName);
-    // console.log(videoName);
-    // console.log(user);
+  socket.on(
+    "sendNotificationComment",
+    ({
+      senderName,
+      senderFamily,
+      receiverId,
+      videoName,
+      videoId,
+      courseid,
+    }) => {
+      const user = getUser(receiverId);
+      // console.log(receiverId);
+      // console.log(senderId);
+      // console.log(senderName);
+      // console.log(videoName);
+      // console.log(user);
 
-    // console.log(io.sockets.manager.roomClient[user.socketId]);
-    io.to(user?.socketId).emit("getNotificationComment", {
-      comment,
-    });
-  });
+      // console.log(io.sockets.manager.roomClient[user.socketId]);
+      io.to(user?.socketId).emit("getNotificationComment", {
+        senderName,
+        senderFamily,
+        videoName,
+        courseid,
+        videoId,
+      });
+    }
+  );
 
   socket.on("sendMessage", ({ senderId, receiverId, userName, text }) => {
     const user = getUser(receiverId);
