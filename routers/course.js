@@ -60,12 +60,12 @@ router.patch("/courses/:id", async (req, res) => {
   }
 
   try {
-    const course = await Course.findOne({
-      _id: req.params.id,
-      owner: req.teacher._id,
-    });
+    // const course = await Course.findOne({
+    //   _id: req.params.id,
+    //   owner: req.teacher._id,
+    // });
 
-    // const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id);
     if (!course) {
       res.status(404).send();
     }
