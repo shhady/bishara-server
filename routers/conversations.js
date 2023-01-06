@@ -15,7 +15,7 @@ router.post("/conversations", async (req, res) => {
     members: [req.body.senderId, req.body.receiverId],
     seen: req.body.seen,
     senderReceiver: req.body.senderReceiver,
-    receiverSender: req.body.receiverSender,
+    receiverr: req.body.receiver,
     lastUpdated: req.body.lastUpdated,
     lastSender: req.body.lastSender,
   });

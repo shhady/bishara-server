@@ -11,6 +11,7 @@ const ConversationSchema = mongoose.Schema(
   {
     members: { type: Array },
     senderReceiver: { type: String, unique: true },
+    receiver: { type: String },
     lastSender: { type: String },
     lastUpdated: { type: String },
     seen: { type: String, default: "false" },
