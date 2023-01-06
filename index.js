@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
     ({
       senderName,
       senderFamily,
+      senderId,
       receiverId,
       videoName,
       videoId,
@@ -85,6 +86,7 @@ io.on("connection", (socket) => {
       io.to(user?.socketId).emit("getNotificationComment", {
         senderName,
         senderFamily,
+        // senderId,
         videoName,
         courseid,
         videoId,

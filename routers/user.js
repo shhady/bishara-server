@@ -93,6 +93,8 @@ router.patch("/users/:id", async (req, res) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
   const allowedUpdate = [
+    "firstName",
+    "lastName",
     "avatar",
     "firstName",
     "lastName",
