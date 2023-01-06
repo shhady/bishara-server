@@ -42,46 +42,66 @@ router.get("/courses/:id", async (req, res) => {
 });
 
 router.patch("/courses/:id", async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdate = [
-    "instrument",
-    "likes",
-    "videos",
-    "description",
-    "coursePhoto",
-    "title",
-  ];
-  const isValidOperation = updates.every((update) => {
-    return allowedUpdate.includes(update);
-  });
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: "invalid updates" });
-  }
-
   try {
-    // const course = await Course.findOne({
-    //   _id: req.params.id,
-    //   owner: req.teacher._id,
-    // });
+    // Find the Practice object with the specified ID and update it with the new values from the request body
+    const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // Return the updated document
+      runValidators: true, // Run the validators on the update
+    });
 
-    const course = await Course.findById(req.params.id);
+    // If the Practice object was not found, return a 404 status code
     if (!course) {
-      res.status(404).send();
+      return res.status(404).send();
     }
-
-    updates.forEach((update) => (course[update] = req.body[update]));
-    await course.save();
-    // const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
-
+    // Send the updated Practice object as the response
     res.send(course);
   } catch (error) {
+    // If an error occurred, return a 400 status code
     res.status(400).send(error);
   }
 });
+
+// router.patch("/courses/:id", async (req, res) => {
+//   const updates = Object.keys(req.body);
+//   const allowedUpdate = [
+//     "instrument",
+//     "likes",
+//     "videos",
+//     "description",
+//     "coursePhoto",
+//     "title",
+//   ];
+//   const isValidOperation = updates.every((update) => {
+//     return allowedUpdate.includes(update);
+//   });
+
+//   if (!isValidOperation) {
+//     return res.status(400).send({ error: "invalid updates" });
+//   }
+
+//   try {
+//     // const course = await Course.findOne({
+//     //   _id: req.params.id,
+//     //   owner: req.teacher._id,
+//     // });
+
+//     const course = await Course.findById(req.params.id);
+//     if (!course) {
+//       res.status(404).send();
+//     }
+
+//     updates.forEach((update) => (course[update] = req.body[update]));
+//     await course.save();
+//     // const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+//     //   new: true,
+//     //   runValidators: true,
+//     // });
+
+//     res.send(course);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// });
 router.put("/courses/:id", async (req, res) => {
   const url = req.body.url;
   const episode = req.body.episode;
