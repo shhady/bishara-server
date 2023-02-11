@@ -5,51 +5,51 @@ import User from "../models/user.js";
 import auth from "../middleware/authuser.js";
 import multer from "multer";
 import sharp from "sharp";
-import nodemailer from "nodemailer";
-import bcrypt from "bcrypt";
+// import nodemailer from "nodemailer";
+// import bcrypt from "bcrypt";
 
-router.post("/forgotPassword", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return res.status(400).send({ error: "This email is not registered." });
-    }
+// router.post("/forgotPassword", async (req, res) => {
+//   try {
+//     const user = await User.findOne({ email: req.body.email });
+//     if (!user) {
+//       return res.status(400).send({ error: "This email is not registered." });
+//     }
 
-    const newPassword = Math.random().toString(36).slice(-8);
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+//     const newPassword = Math.random().toString(36).slice(-8);
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = hashedPassword;
-    await user.save();
+//     user.password = hashedPassword;
+//     await user.save();
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       auth: {
+//         user: process.env.EMAIL_ADDRESS,
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_ADDRESS,
-      to: user.email,
-      subject: "Password reset",
-      text: `Your new password is ${newPassword}`,
-    };
+//     const mailOptions = {
+//       from: process.env.EMAIL_ADDRESS,
+//       to: user.email,
+//       subject: "Password reset",
+//       text: `Your new password is ${newPassword}`,
+//     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(400).send({ error: "Could not send email." });
-      } else {
-        return res
-          .status(200)
-          .send({ message: "An email has been sent with the new password." });
-      }
-    });
-  } catch (error) {
-    res.status(500).send({ error: "Server error." });
-  }
-});
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         return res.status(400).send({ error: "Could not send email." });
+//       } else {
+//         return res
+//           .status(200)
+//           .send({ message: "An email has been sent with the new password." });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).send({ error: "Server error." });
+//   }
+// });
 
 // router.post("/signin", signin);
 // router.post("/signup", signup);
