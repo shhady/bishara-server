@@ -35,7 +35,7 @@ router.put("/resetPassword", async (req, res) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_ADDRESS,
+      from: "bisharaweb@gmail.com",
       to: user.email,
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
