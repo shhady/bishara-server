@@ -9,6 +9,7 @@ import sharp from "sharp";
 // import bcrypt from "bcrypt";
 
 router.put("/resetPassword", async (req, res) => {
+  
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
@@ -19,8 +20,8 @@ router.put("/resetPassword", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = hashedPassword;
-    user.confirmPassword = hashedPassword;
+    user.password = newPassword;
+    user.confirmPassword = newPassword;
     await user.save();
     res.send({user:user, password: newPassword})
     // const transporter = nodemailer.createTransport({
