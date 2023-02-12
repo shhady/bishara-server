@@ -9,11 +9,11 @@ import sharp from "sharp";
 import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 
-router.put("/resetPassword", async (req, res) => {
+router.put("/teachers/resetPassword", async (req, res) => {
   const email = req.body.email
   try {
-    const user = await Teacher.findOne({ email: req.body.email });
-    if (!user) {
+    const teacher = await Teacher.findOne({ email: req.body.email });
+    if (!teacher) {
       return res.status(400).send({ error: "This email is not registered." });
     }
 
@@ -21,10 +21,10 @@ router.put("/resetPassword", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = newPassword;
-    user.confirmPassword = newPassword;
-    await user.save();
-    res.send({user:user, password: newPassword, hashed:hashedPassword});
+    teacher.password = newPassword;
+    teacher.confirmPassword = newPassword;
+    await teacher.save();
+    res.send({teacher:teacher, password: newPassword, hashed:hashedPassword});
     const transporter = NodeMailer.createTransport({
       service: 'Hotmail',
     
