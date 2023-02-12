@@ -16,11 +16,11 @@ router.put("/resetPassword", async (req, res) => {
     }
 
     const newPassword = Math.random().toString(36).slice(-8);
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    // user.password = newPassword;
-    // user.confirmPassword = newPassword;
+    user.password = hashedPassword;
+    user.confirmPassword = hashedPassword;
     await user.save();
     res.send({user:user, password: newPassword})
     // const transporter = nodemailer.createTransport({
