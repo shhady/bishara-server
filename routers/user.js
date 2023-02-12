@@ -6,7 +6,7 @@ import auth from "../middleware/authuser.js";
 import multer from "multer";
 import sharp from "sharp";
 // import nodemailer from "nodemailer";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 router.put("/resetPassword", async (req, res) => {
   
