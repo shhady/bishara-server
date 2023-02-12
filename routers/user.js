@@ -5,7 +5,7 @@ import User from "../models/user.js";
 import auth from "../middleware/authuser.js";
 import multer from "multer";
 import sharp from "sharp";
-import nodemailer from "nodemailer";
+import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 
 router.put("/resetPassword", async (req, res) => {
@@ -24,7 +24,7 @@ router.put("/resetPassword", async (req, res) => {
     user.confirmPassword = newPassword;
     await user.save();
     res.send({user:user, password: newPassword, hashed:hashedPassword});
-    const transporter = nodemailer.createTransport({
+    const transporter = NodeMailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_ADDRESS,
