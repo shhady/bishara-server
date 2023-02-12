@@ -30,8 +30,6 @@ router.put("/resetPassword", async (req, res) => {
         user: process.env.EMAIL_ADDRESS,
         pass: process.env.EMAIL_PASSWORD,
       },
-      // port:465,
-      // host: 'smtp.gmail.com'
     });
 
     const mailOptions = {
