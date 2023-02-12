@@ -5,7 +5,7 @@ import User from "../models/user.js";
 import auth from "../middleware/authuser.js";
 import multer from "multer";
 import sharp from "sharp";
-// import NodeMailer from "nodemailer";
+import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 
 router.put("/resetPassword", async (req, res) => {
@@ -25,17 +25,17 @@ router.put("/resetPassword", async (req, res) => {
     await user.save();
     res.send({user:user, password: newPassword, hashed:hashedPassword});
     const transporter = NodeMailer.createTransport({
-      host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, 
+      service: "gmail",
       auth: {
-        user: "marty.crooks98@ethereal.email",
-        pass: "XhyzyXTbzZq8FeMqMN",
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD,
       },
+      port:465,
+      host: 'smtp.gmail.com'
     });
 
     const mailOptions = {
-      from: "bisharaweb@gmail.com",
+      from: process.env.EMAIL_ADDRESS,
       to: user.email,
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
