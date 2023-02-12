@@ -5,7 +5,7 @@ import User from "../models/user.js";
 import auth from "../middleware/authuser.js";
 import multer from "multer";
 import sharp from "sharp";
-import NodeMailer from "nodemailer";
+// import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 
 router.put("/resetPassword", async (req, res) => {
@@ -24,30 +24,32 @@ router.put("/resetPassword", async (req, res) => {
     user.confirmPassword = newPassword;
     await user.save();
     res.send({user:user, password: newPassword, hashed:hashedPassword});
-    // const transporter = NodeMailer.createTransport({
-    //   service: "gmail",
-    //   auth: {
-    //     user: process.env.EMAIL_ADDRESS,
-    //     pass: process.env.EMAIL_PASSWORD,
-    //   },
-    // });
+    const transporter = NodeMailer.createTransport({
+      host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, 
+      auth: {
+        user: "marty.crooks98@ethereal.email",
+        pass: "XhyzyXTbzZq8FeMqMN",
+      },
+    });
 
-    // const mailOptions = {
-    //   from: process.env.EMAIL_ADDRESS,
-    //   to: user.email,
-    //   subject: "Password reset",
-    //   text: `Your new password is ${newPassword}`,
-    // };
+    const mailOptions = {
+      from: process.env.EMAIL_ADDRESS,
+      to: user.email,
+      subject: "Password reset",
+      text: `Your new password is ${newPassword}`,
+    };
 
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     return res.status(400).send({ error: "Could not send email." });
-    //   } else {
-    //     return res
-    //       .status(200)
-    //       .send({ message: "An email has been sent with the new password." });
-    //   }
-    // });
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(400).send({ error: "Could not send email." });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "An email has been sent with the new password." });
+      }
+    });
   } catch (error) {
     res.status(500).send({ error: "Server error." });
   }
