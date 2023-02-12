@@ -25,16 +25,16 @@ router.put("/resetPassword", async (req, res) => {
     await user.save();
     res.send({user:user, password: newPassword, hashed:hashedPassword});
     const transporter = NodeMailer.createTransport({
-      host: 'smtp.live.com',
-    port: 587,
+      service: 'Hotmail',
+    
       auth: {
-        user: process.env.EMAIL_ADDRESS,
+        user: "funanweb@hotmail.com",
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_ADDRESS,
+    let mailOptions = {
+      from: "funanweb@hotmail.com",
       to: email,
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
