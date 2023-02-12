@@ -9,7 +9,7 @@ import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 
 router.put("/resetPassword", async (req, res) => {
-  
+  const email = req.body.email
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
@@ -30,11 +30,13 @@ router.put("/resetPassword", async (req, res) => {
         user: process.env.EMAIL_ADDRESS,
         pass: process.env.EMAIL_PASSWORD,
       },
+      port:465,
+      host: 'smtp.gmail.com'
     });
 
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
-      to: user.email,
+      to: email,
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
     };
