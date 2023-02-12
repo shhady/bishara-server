@@ -6,6 +6,54 @@ import auth from "../middleware/authteacher.js";
 import multer from "multer";
 import sharp from "sharp";
 // import cloudinary from "../cloudinary/cloudinary.js";
+import NodeMailer from "nodemailer";
+import bcrypt from "bcryptjs";
+
+router.put("/resetPassword", async (req, res) => {
+  const email = req.body.email
+  try {
+    const user = await Teacher.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send({ error: "This email is not registered." });
+    }
+
+    const newPassword = Math.random().toString(36).slice(-8);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = newPassword;
+    user.confirmPassword = newPassword;
+    await user.save();
+    res.send({user:user, password: newPassword, hashed:hashedPassword});
+    const transporter = NodeMailer.createTransport({
+      service: 'Hotmail',
+    
+      auth: {
+        user: "funanweb@hotmail.com",
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    let mailOptions = {
+      from: "funanweb@hotmail.com",
+      to: email,
+      subject: "Password reset",
+      text: `Your new password is ${newPassword}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(400).send({ error: "Could not send email." });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "An email has been sent with the new password." });
+      }
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Server error." });
+  }
+});
 
 router.post("/teachers", async (req, res) => {
   const password = req.body.password;
