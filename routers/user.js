@@ -23,7 +23,7 @@ router.put("/resetPassword", async (req, res) => {
     // user.password = newPassword;
     // user.confirmPassword = newPassword;
     await user.save();
-    res.send({user:user, password: newPassword});
+    res.send({user:user, password: newPassword, hashed:hashedPassword});
     // const transporter = nodemailer.createTransport({
     //   service: "gmail",
     //   auth: {
