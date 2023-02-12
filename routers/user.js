@@ -15,13 +15,13 @@ router.put("/resetPassword", async (req, res) => {
       return res.status(400).send({ error: "This email is not registered." });
     }
 
-    const newPassword = Math.random().toString(36).slice(-8);
-    const salt = await bcrypt.genSalt(10);
+    // const newPassword = Math.random().toString(36).slice(-8);
+    // const salt = await bcrypt.genSalt(10);
     // const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = newPassword;
-    user.confirmPassword = newPassword;
-    await user.save();
+    // user.password = newPassword;
+    // user.confirmPassword = newPassword;
+    // await user.save();
     res.send(user)
     // const transporter = nodemailer.createTransport({
     //   service: "gmail",
