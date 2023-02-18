@@ -186,7 +186,7 @@ router.get("/teachers/:id", async (req, res) => {
   }
 });
 
-router.patch("/teachers/:id", async (req, res) => {
+router.patch("/teachers/:id",auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
