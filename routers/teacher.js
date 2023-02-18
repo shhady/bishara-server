@@ -150,7 +150,6 @@ router.get("/teachers/me", auth, async (req, res) => {
 });
 
 router.post("/teachers/logout", auth, async (req, res) => {
-  console.log("logout")
   try {
     req.teacher.tokens = req.teacher.tokens.filter((token) => {
       return token.token !== req.token;
@@ -186,7 +185,7 @@ router.get("/teachers/:id", async (req, res) => {
   }
 });
 
-router.patch("/teachers/:id",auth, async (req, res) => {
+router.patch("/teachers/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
