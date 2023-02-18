@@ -150,6 +150,7 @@ router.get("/teachers/me", auth, async (req, res) => {
 });
 
 router.post("/teachers/logout", auth, async (req, res) => {
+  console.log("logout")
   try {
     req.teacher.tokens = req.teacher.tokens.filter((token) => {
       return token.token !== req.token;
