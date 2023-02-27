@@ -25,31 +25,31 @@ router.put("/teachers/resetPassword", async (req, res) => {
     teacher.confirmPassword = newPassword;
     await teacher.save();
     res.send({teacher:teacher, password: newPassword, hashed:hashedPassword});
-    const transporter = NodeMailer.createTransport({
-      service: 'Hotmail',
+    // const transporter = NodeMailer.createTransport({
+    //   service: 'Hotmail',
     
-      auth: {
-        user: "funanweb@hotmail.com",
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+    //   auth: {
+    //     user: "funanweb@hotmail.com",
+    //     pass: process.env.EMAIL_PASSWORD,
+    //   },
+    // });
 
-    let mailOptions = {
-      from: "funanweb@hotmail.com",
-      to: email,
-      subject: "Password reset",
-      text: `Your new password is ${newPassword}`,
-    };
+    // let mailOptions = {
+    //   from: "funanweb@hotmail.com",
+    //   to: email,
+    //   subject: "Password reset",
+    //   text: `Your new password is ${newPassword}`,
+    // };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return res.status(400).send({ error: "Could not send email." });
-      } else {
-        return res
-          .status(200)
-          .send({ message: "An email has been sent with the new password." });
-      }
-    });
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     return res.status(400).send({ error: "Could not send email." });
+    //   } else {
+    //     return res
+    //       .status(200)
+    //       .send({ message: "An email has been sent with the new password." });
+    //   }
+    // });
   } catch (error) {
     res.status(500).send({ error: "Server error." });
   }

@@ -147,7 +147,7 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-router.patch("/users/:id", async (req, res) => {
+router.patch("/users/:id",auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
