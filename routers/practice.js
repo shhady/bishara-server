@@ -62,6 +62,19 @@ router.get("/practices/:id", auth, async (req, res) => {
     res.status(500).send();
   }
 });
+router.get("/practice/:id", async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const practice = await Practice.findById(_id);
+    if (!practice) {
+      return res.status(404).send();
+    }
+    res.send(practice);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
 
 router.get("/mypractices/:id", async (req, res) => {
   const teacherId = req.params.teacherId;
