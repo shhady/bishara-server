@@ -190,6 +190,56 @@ router.put("/practices/:id", async (req, res) => {
     res.status(404).send(error);
   }
 });
+router.put("/practiceRec/:id", async (req, res) => {
+  const RecordingReply = req.body.RecordingReply;
+  const videoName = req.body.videoName;
+  const courseId = req.body.courseId;
+  const nameOfProblem = req.body.nameOfProblem;
+  const practiceId = req.body.practiceId;
+  const uniqueLink = req.body.uniqueLink;
+  const teacherId = req.body.teacherId;
+  const replyId = req.body.replyId;
+  try {
+    const RecordReply = await Practice.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          RecordReply: {
+            RecordingReply,
+            videoName,
+            courseId,
+            nameOfProblem,
+            practiceId,
+            uniqueLink,
+            teacherId,
+            replyId,
+          },
+        },
+      }
+    );
+    if (RecordReply.length >= 2) {
+      return res.status(400).send({ error: "max two replies" });
+    } else {
+      await RecordReply.save();
+      // console.log(firstName);
+      res.status(200).send(RecordReply);
+    }
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+router.put("/practice/recordingReply/:id", async (req, res) => {
+  const replyId = req.body.replyId;
+  console.log(replyId);
+  const practiceToUpdate = await Practice.findOneAndUpdate(
+    { _id: req.params.id },
+    { $pull: { recordReply: { replyId: replyId } } }
+  );
+  await practiceToUpdate.save();
+
+  res.status(200).send({ practiceToUpdate, replyId });
+});
 
 router.put("/practice/videoReply/:id", async (req, res) => {
   const replyId = req.body.replyId;

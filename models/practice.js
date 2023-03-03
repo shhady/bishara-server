@@ -30,6 +30,14 @@ const practiceSchema = mongoose.Schema(
         }
       },
     },
+    RecordReply: {
+      type: [{ type: Object }],
+      validate(RecordingReply) {
+        if (RecordingReply.length > 2) {
+          throw new Error("max four replies");
+        }
+      },
+    },
   },
   {
     timestamps: true,
