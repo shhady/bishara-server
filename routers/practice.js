@@ -218,7 +218,7 @@ router.put("/practiceRec/:id", async (req, res) => {
       }
     );
     if (RecordReply.length >= 2) {
-      return res.status(400).send({ error: "max two replies" });
+      return res.status(400).send({ error: "max two replies allowed" });
     } else {
       await RecordReply.save();
       // console.log(firstName);
