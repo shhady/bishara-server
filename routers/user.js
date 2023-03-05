@@ -62,7 +62,7 @@ router.put("/paid/:id", async (req, res) => {
       return res.status(400).send({ error: "This email is not registered." });
     }
     user.paid = _id
-    await teacher.save();
+    await user.save();
     res.send({user:user});
   } catch (error) {
     res.status(500).send({ error: "Server error." });
