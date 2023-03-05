@@ -13,6 +13,7 @@ import Practice from "./practice.js";
 // export default mongoose.model("User", userSchema);
 const userSchema = mongoose.Schema(
   {
+    paid:{type: String, default:false},
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
     email: {
