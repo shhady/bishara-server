@@ -229,7 +229,7 @@ router.put("/practiceRec/:id", async (req, res) => {
   }
 });
 
-router.put("/practice/recordingReply/:id", async (req, res) => {
+router.put("/practice/deleteRecordingReply/:id", async (req, res) => {
   const replyId = req.body.replyId;
   console.log(replyId);
   const practiceToUpdate = await Practice.findOneAndUpdate(
