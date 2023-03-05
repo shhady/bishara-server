@@ -53,18 +53,18 @@ router.put("/resetPassword", async (req, res) => {
     res.status(500).send({ error: "Server error." });
   }
 });
-router.put("/paid/:id", async (req, res) => {
-  const email = req.body.email
-  const _id = req.params.id;
+router.put("/paid", async (req, res) => {
+  const { email, userId } = req.body;
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({ error: "This email is not registered." });
     }
-    user.paid = _id
+    user.paid = userId;
     await user.save();
-    res.send({user:user});
+    res.send({ user });
   } catch (error) {
+    console.error(error);
     res.status(500).send({ error: "Server error." });
   }
 });
