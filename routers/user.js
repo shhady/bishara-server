@@ -79,6 +79,17 @@ router.get("/users", auth, async (req, res) => {
     res.status(500).send();
   }
 });
+router.get("/myUsers/:id", async (req, res) => {
+  // const id = req.params.id;
+  try {
+    const users = await User.find({paid:req.params.id}).sort({
+      createdAt: -1,
+    });;
+    res.status(200).send(users);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
 
 router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
