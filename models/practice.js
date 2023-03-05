@@ -34,7 +34,7 @@ const practiceSchema = mongoose.Schema(
       type: [{ type: Object }],
       validate(RecordingReply) {
         if (RecordingReply.length > 2) {
-          throw new Error("max four replies");
+          throw new Error("max two replies");
         }
       },
     },
