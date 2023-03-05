@@ -234,7 +234,7 @@ router.put("/practice/deleteRecordReply/:id", async (req, res) => {
   console.log(replyId);
   const practiceToUpdate = await Practice.findOneAndUpdate(
     { _id: req.params.id },
-    { $pull: { recordReply: { replyId: replyId } } }
+    { $pull: { RecordReply: { replyId: replyId } } }
   );
   await practiceToUpdate.save();
 
