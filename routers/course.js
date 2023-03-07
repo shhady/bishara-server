@@ -16,9 +16,10 @@ router.post("/courses", auth, (req, res) => {
   }
 });
 router.post("/addCourses", (req, res) => {
-    const myCourse = req.body
+   
   const course = new Course({
-    myCourse
+    ...req.body,
+    // owner: req.user._id,
   }
   );
   try {
