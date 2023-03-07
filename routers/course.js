@@ -15,15 +15,37 @@ router.post("/courses", auth, (req, res) => {
     res.status(400).send(error);
   }
 });
-router.post("/courses/admin", (req, res) => {
-  const course = new Course(
-    req.body
-  );
+router.post('/addCourses', async (req, res) => {
+  const {
+    instrument,
+    firstName,
+    lastName,
+    title,
+    avatar,
+    description,
+    level,
+    playlistId,
+    coursePhoto,
+  } = req.body;
+
   try {
-    course.save();
-    res.status(201).send(course);
+    const newCourse = new Course({
+      instrument,
+      firstName,
+      lastName,
+      title,
+      avatar,
+      description,
+      level,
+      playlistId,
+      coursePhoto,
+    });
+
+    await newCourse.save();
+    res.status(201).send(newCourse);
   } catch (error) {
-    res.status(400).send(error);
+    console.error(error);
+    res.status(500).send();
   }
 });
 router.get("/courses", async (req, res) => {
