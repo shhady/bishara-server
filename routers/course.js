@@ -17,9 +17,9 @@ router.post("/courses", auth, (req, res) => {
 });
 router.post("/addCourses", (req, res) => {
   //   const course = new Course(req.body);
-  const course = new Course({
+  const course = new Course(
     ...req.body
-  });
+  );
   try {
     course.save();
     res.status(201).send(course);
