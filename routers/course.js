@@ -15,39 +15,19 @@ router.post("/courses", auth, (req, res) => {
     res.status(400).send(error);
   }
 });
-router.post('/addCourses', async (req, res) => {
-  const {
-    instrument,
-    firstName,
-    lastName,
-    title,
-    avatar,
-    description,
-    level,
-    playlistId,
-    coursePhoto,
-  } = req.body;
-
+router.post("/addCourses", (req, res) => {
+  //   const course = new Course(req.body);
+  const course = new Course({
+    ...req.body,
+  });
   try {
-    const newCourse = new Course({
-      instrument,
-      firstName,
-      lastName,
-      title,
-      avatar,
-      description,
-      level,
-      playlistId,
-      coursePhoto,
-    });
-
-    await newCourse.save();
-    res.status(201).send(newCourse);
+    course.save();
+    res.status(201).send(course);
   } catch (error) {
-    console.error(error);
-    res.status(500).send();
+    res.status(400).send(error);
   }
 });
+
 router.get("/courses", async (req, res) => {
   try {
     const courses = await Course.find({}).sort({ createdAt: -1 });
