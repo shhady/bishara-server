@@ -16,9 +16,8 @@ router.post("/courses", auth, (req, res) => {
   }
 });
 router.post("/courses/admin", (req, res) => {
-    const myCourse = req.body;
   const course = new Course(
-    myCourse
+    req.body
   );
   try {
     course.save();
