@@ -186,8 +186,8 @@ router.get("/teachers/:id", async (req, res) => {
   }
 });
 router.get("/teacher", async (req, res) => {
-  const _id = req.params.id;
-  const email = req.body.email
+
+  const email = req.query.email;
   try {
     const teacher = await Teacher.findOne({email});
     if (!teacher) {
