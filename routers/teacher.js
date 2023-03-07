@@ -185,6 +185,19 @@ router.get("/teachers/:id", async (req, res) => {
     res.status(500).send();
   }
 });
+router.get("/teacher", async (req, res) => {
+  const _id = req.params.id;
+  const email = req.body.email
+  try {
+    const teacher = await Teacher.findOne({email});
+    if (!teacher) {
+      return res.status(404).send();
+    }
+    res.send(teacher);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
 
 router.patch("/teachers/:id",auth, async (req, res) => {
   const updates = Object.keys(req.body);
