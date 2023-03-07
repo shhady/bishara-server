@@ -15,7 +15,18 @@ router.post("/courses", auth, (req, res) => {
     res.status(400).send(error);
   }
 });
-
+router.post("/courses/admin", (req, res) => {
+  //   const course = new Course(req.body);
+  const course = new Course({
+    ...req.body,
+  });
+  try {
+    course.save();
+    res.status(201).send(course);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 router.get("/courses", async (req, res) => {
   try {
     const courses = await Course.find({}).sort({ createdAt: -1 });
