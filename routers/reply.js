@@ -47,4 +47,22 @@ router.get("/replies", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+router.delete("/replies/:id", async (req, res) => {
+  try {
+    // const practice = await Practice.findByIdAndDelete(req.params.id);
+    const reply = await Reply.findOneAndDelete({
+      _id: req.params.id,
+      // owner: req.user._id,
+    });
+
+    if (!reply) {
+      return res.status(404).send();
+    }
+    res.send(reply);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 export default router;
