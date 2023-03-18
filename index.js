@@ -22,6 +22,8 @@ const io = new Server(server, {
   cors: {
     origin: process.env.Origin_Cors,
     methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials:true
   },
 });
 import path from "path";
