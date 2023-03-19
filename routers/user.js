@@ -33,7 +33,7 @@ router.put("/resetPassword", async (req, res) => {
     };
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
-    sgMail.send(msg, (error) => {
+    await sgMail.send(msg, (error) => {
       if (error) {
         return res.status(400).send({ error: "Could not send email." });
       } else {
