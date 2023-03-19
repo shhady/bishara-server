@@ -8,44 +8,75 @@ import sharp from "sharp";
 import bcrypt from "bcryptjs";
 import sgMail from "@sendgrid/mail"
 
+// router.put("/resetPassword", async (req, res) => {
+//   const email = req.body.email
+//   try {
+//     const user = await User.findOne({ email: req.body.email });
+//     if (!user) {
+//       return res.status(400).send({ error: "This email is not registered." });
+//     }
+
+//     const newPassword = Math.random().toString(36).slice(-8);
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+//     user.password = newPassword;
+//     user.confirmPassword = newPassword;
+//     await user.save();
+//     res.send({user:user, password: newPassword, hashed:hashedPassword});
+    
+//     const msg = {
+//       to: req.body.email,
+//       from: "bisharaweb@gmail.com", // change this to your sender email
+//       subject: "Password reset",
+//       text: `Your new password is ${newPassword}`,
+//     };
+
+//     sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
+//     await sgMail.send(msg, (error) => {
+//       if (error) {
+//         return res.status(400).send({ error: "Could not send email." });
+//       } else {
+//         return res
+//           .status(200)
+//           .send({ message: "An email has been sent with the new password." });
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).send({ error: "Server error." });
+//   }
+// });
 router.put("/resetPassword", async (req, res) => {
-  const email = req.body.email
+  const email = req.body.email;
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({ error: "This email is not registered." });
     }
-
+ 
     const newPassword = Math.random().toString(36).slice(-8);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-    user.password = newPassword;
-    user.confirmPassword = newPassword;
+ 
+    user.password = hashedPassword;
+    user.confirmPassword = hashedPassword;
     await user.save();
-    res.send({user:user, password: newPassword, hashed:hashedPassword});
-    
+ 
     const msg = {
-      to: req.body.email,
+      to: email,
       from: "bisharaweb@gmail.com", // change this to your sender email
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
     };
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
-    await sgMail.send(msg, (error) => {
-      if (error) {
-        return res.status(400).send({ error: "Could not send email." });
-      } else {
-        return res
-          .status(200)
-          .send({ message: "An email has been sent with the new password." });
-      }
-    });
+ 
+    await sgMail.send(msg);
+    return res.status(200).send({ message: "An email has been sent with the new password." });
   } catch (error) {
+    console.error(error);
     res.status(500).send({ error: "Server error." });
   }
 });
+
  
 router.put("/paid", async (req, res) => {
   const { email, userId } = req.body;
