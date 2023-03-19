@@ -9,7 +9,6 @@ import sharp from "sharp";
 // import cloudinary from "../cloudinary/cloudinary.js";
 import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
-import { validationResult } from "express-validator";
 import sgMail from "@sendgrid/mail"
 router.put("/teachers/resetPassword", async (req, res) => {
   const email = req.body.email

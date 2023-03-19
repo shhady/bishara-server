@@ -7,6 +7,7 @@ import multer from "multer";
 import sharp from "sharp";
 import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
+import sgMail from "@sendgrid/mail"
 
 router.put("/resetPassword", async (req, res) => {
   const email = req.body.email
@@ -24,23 +25,16 @@ router.put("/resetPassword", async (req, res) => {
     user.confirmPassword = newPassword;
     await user.save();
     res.send({user:user, password: newPassword, hashed:hashedPassword});
-    const transporter = NodeMailer.createTransport({
-      service: 'Hotmail',
     
-      auth: {
-        user: "funanweb@hotmail.com",
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    let mailOptions = {
-      from: "funanweb@hotmail.com",
-      to: email,
+    const msg = {
+      to: req.body.email,
+      from: "bisharaweb@gmail.com", // change this to your sender email
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
+    sgMail.send(msg, (error) => {
       if (error) {
         return res.status(400).send({ error: "Could not send email." });
       } else {
@@ -53,6 +47,35 @@ router.put("/resetPassword", async (req, res) => {
     res.status(500).send({ error: "Server error." });
   }
 });
+  //   const transporter = NodeMailer.createTransport({
+  //     service: 'Hotmail',
+    
+  //     auth: {
+  //       user: "funanweb@hotmail.com",
+  //       pass: process.env.EMAIL_PASSWORD,
+  //     },
+  //   });
+
+  //   let mailOptions = {
+  //     from: "funanweb@hotmail.com",
+  //     to: email,
+  //     subject: "Password reset",
+  //     text: `Your new password is ${newPassword}`,
+  //   };
+
+  //   transporter.sendMail(mailOptions, (error, info) => {
+  //     if (error) {
+  //       return res.status(400).send({ error: "Could not send email." });
+  //     } else {
+  //       return res
+  //         .status(200)
+  //         .send({ message: "An email has been sent with the new password." });
+  //     }
+  //   });
+  // } catch (error) {
+  //   res.status(500).send({ error: "Server error." });
+  // }
+// });
 router.put("/paid", async (req, res) => {
   const { email, userId } = req.body;
   try {
