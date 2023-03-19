@@ -29,7 +29,7 @@ router.put("/teachers/resetPassword", async (req, res) => {
     res.send({teacher:teacher, password: newPassword, hashed:hashedPassword});
 
     const msg = {
-      to: email,
+      to: req.body.email,
       from: "bisharaweb@gmail.com", // change this to your sender email
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
