@@ -48,37 +48,40 @@ import sgMail from "@sendgrid/mail"
 //   }
 // });
 router.put("/teachers/resetPassword", async (req, res) => {
-  const email = req.body.email
+  const email = req.body.email;
   try {
-     const teacher = await Teacher.findOne({ email: req.body.email });
+     const teacher = await Teacher.findOne({ email: email });
      if (!teacher) {
        return res.status(400).send({ error: "This email is not registered." });
      }
-  
      const newPassword = Math.random().toString(36).slice(-8);
      const salt = await bcrypt.genSalt(10);
      const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
      teacher.password = newPassword;
      teacher.confirmPassword = newPassword;
      await teacher.save();
-     res.send({teacher:teacher, password: newPassword, hashed:hashedPassword});
-  
      const msg = {
-       to: req.body.email,
+       to: email,
        from: "bisharaweb@gmail.com", // change this to your sender email
        subject: "Password reset",
        text: `Your new password is ${newPassword}`,
      };
-  
-     sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
-     await sgMail.send(msg);
-     return res.status(200).send({ message: "An email has been sent with the new password." });
+     sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API key
+     try {
+       await sgMail.send(msg);
+       res.status(200).send({ message: "An email has been sent with the new password." });
+     } catch (error) {
+       // If there's an error sending the email, revert the password change
+       teacher.password = req.body.password;
+       teacher.confirmPassword = req.body.password;
+       await teacher.save();
+       res.status(500).send({ error: "Failed to send email." });
+     }
    } catch (error) {
      res.status(500).send({ error: "Server error." });
    }
  });
-  
+ 
   
  
     // const transporter = NodeMailer.createTransport({
