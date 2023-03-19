@@ -61,7 +61,8 @@ router.put("/resetPassword", async (req, res) => {
     user.password = hashedPassword;
     user.confirmPassword = hashedPassword;
     await user.save();
- 
+     res.send({user:user, password: newPassword, hashed:hashedPassword});
+
     const msg = {
       to: email,
       from: "bisharaweb@gmail.com", // change this to your sender email
