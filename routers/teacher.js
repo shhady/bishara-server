@@ -1,4 +1,5 @@
 import express from "express";
+
 // import { signin, signup } from "../controllers/teacher.js";
 const router = express.Router();
 import Teacher from "../models/teacher.js";
@@ -8,7 +9,8 @@ import sharp from "sharp";
 // import cloudinary from "../cloudinary/cloudinary.js";
 import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
-
+import { validationResult } from "express-validator";
+import sgMail from "@sendgrid/mail"
 router.put("/teachers/resetPassword", async (req, res) => {
   const email = req.body.email
   try {
@@ -25,6 +27,28 @@ router.put("/teachers/resetPassword", async (req, res) => {
     teacher.confirmPassword = newPassword;
     await teacher.save();
     res.send({teacher:teacher, password: newPassword, hashed:hashedPassword});
+
+    const msg = {
+      to: email,
+      from: "bisharaweb@gmail.com", // change this to your sender email
+      subject: "Password reset",
+      text: `Your new password is ${newPassword}`,
+    };
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API key
+    sgMail.send(msg, (error) => {
+      if (error) {
+        return res.status(400).send({ error: "Could not send email." });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "An email has been sent with the new password." });
+      }
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Server error." });
+  }
+});
     // const transporter = NodeMailer.createTransport({
     //   service: 'Hotmail',
     
@@ -50,10 +74,10 @@ router.put("/teachers/resetPassword", async (req, res) => {
     //       .send({ message: "An email has been sent with the new password." });
     //   }
     // });
-  } catch (error) {
-    res.status(500).send({ error: "Server error." });
-  }
-});
+  // } catch (error) {
+  //   res.status(500).send({ error: "Server error." });
+  // }
+// });
 
 router.post("/teachers", async (req, res) => {
   const password = req.body.password;
