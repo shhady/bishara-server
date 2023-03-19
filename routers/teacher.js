@@ -7,7 +7,6 @@ import auth from "../middleware/authteacher.js";
 import multer from "multer";
 import sharp from "sharp";
 // import cloudinary from "../cloudinary/cloudinary.js";
-import NodeMailer from "nodemailer";
 import bcrypt from "bcryptjs";
 import sgMail from "@sendgrid/mail"
 router.put("/teachers/resetPassword", async (req, res) => {
