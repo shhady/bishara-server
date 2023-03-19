@@ -21,8 +21,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.Origin_Cors,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
+    methods: ["GET", "POST","PUT", "PATCH","DELETE"],
+    allowedHeaders: ["Content-Type, Authorization"],
     credentials:true
   },
 });
