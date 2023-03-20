@@ -80,13 +80,15 @@ router.put("/resetPassword", async (req, res) => {
 
  
 router.put("/paid", async (req, res) => {
-  const { email, userId } = req.body;
+  const { email, userId, paidDate, paidPeriod } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send({ error: "This email is not registered." });
     }
     user.paid = userId;
+    user.paidDate=paidDate;
+    user.paidPeriod=paidPeriod;
     await user.save();
     res.send({ user });
   } catch (error) {
