@@ -14,6 +14,8 @@ import Practice from "./practice.js";
 const userSchema = mongoose.Schema(
   {
     paid:{type: String, default:false},
+    paidDate:{type: Date},
+    paidPeriod:{type:Number},
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
     email: {
