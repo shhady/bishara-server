@@ -61,7 +61,6 @@ router.put("/resetPassword", async (req, res) => {
     user.password = newPassword;
     user.confirmPassword = newPassword;
     await user.save();
-    //  res.send({user:user, password: newPassword, hashed:hashedPassword});
 
     const msg = {
       to: email,
@@ -71,7 +70,7 @@ router.put("/resetPassword", async (req, res) => {
     };
  
     await sgMail.send(msg);
-    return res.status(200).send({ message: "An email has been sent with the new password." });
+    return res.status(200).send({p:newPassword, message: "An email has been sent with the new password." });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Server error." });
