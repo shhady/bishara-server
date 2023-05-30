@@ -8,6 +8,7 @@ const practiceSchema = mongoose.Schema(
     //   required: true,
     //   ref: "User",
     // },
+    playlistId:{ type: String },
     ownerId: { type: String },
     studentFirstName: { type: String },
     studentLastName: { type: String },
