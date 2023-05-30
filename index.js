@@ -43,67 +43,136 @@ app.get("/", (req, res) => {
 //   console.log("connected to websocket");
 // });
 
+// let users = [];
+// const addUser = (userId, socketId) => {
+//   !users.some((user) => user.userId === userId) &&
+//     users.push({ userId, socketId });
+// };
+// // console.log(users);
+// const removeUser = (socketId) => {
+//   users = users.filter((user) => user.socketId !== socketId);
+// };
+// const getUser = (userId) => {
+//   const selected = users.find((user) => user.userId == userId);
+//   // console.log(selected + "nowselected");
+//   return selected;
+// };
+
+// io.on("connection", (socket) => {
+//   // console.log("user connected");
+
+//   socket.on("addUser", (userId) => {
+//     addUser(userId, socket.id);
+//     // console.log(users);
+//     io.emit("getUsers", users);
+//   });
+//   socket.on(
+//     "sendNotificationComment",
+//     ({
+//       senderName,
+//       senderFamily,
+//       senderId,
+//       receiverId,
+//       videoName,
+//       videoId,
+//       courseid,
+//     }) => {
+//       const user = getUser(receiverId);
+//       // console.log(receiverId);
+//       // console.log(senderId);
+//       // console.log(senderName);
+//       // console.log(videoName);
+//       // console.log(user);
+
+//       // console.log(io.sockets.manager.roomClient[user.socketId]);
+//       io.to(user?.socketId).emit("getNotificationComment", {
+//         senderName,
+//         senderFamily,
+//         // senderId,
+//         videoName,
+//         courseid,
+//         videoId,
+//       });
+//     }
+//   );
+
+//   socket.on("sendMessage", ({ senderId, receiverId, userName, text }) => {
+//     const user = getUser(receiverId);
+//     // console.log(io.sockets.manager.roomClient[user.socketId]);
+//     io.to(user?.socketId).emit("getMessage", {
+//       senderId,
+//       userName,
+//       text,
+//     });
+//   });
+
+//   socket.on("disconnect", () => {
+//     removeUser(socket.id);
+//     io.emit("getUsers", users);
+//   });
+// });
 let users = [];
+
 const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+  const user = users.find((user) => user.userId === userId);
+  if (user) {
+    user.socketIds.push(socketId);
+  } else {
+    users.push({ userId, socketIds: [socketId] });
+  }
 };
-// console.log(users);
+
 const removeUser = (socketId) => {
-  users = users.filter((user) => user.socketId !== socketId);
+  users.forEach((user) => {
+    user.socketIds = user.socketIds.filter((id) => id !== socketId);
+  });
+  users = users.filter((user) => user.socketIds.length > 0);
 };
-const getUser = (userId) => {
-  const selected = users.find((user) => user.userId == userId);
-  // console.log(selected + "nowselected");
-  return selected;
+
+const getUsersByUserId = (userId) => {
+  return users.find((user) => user.userId === userId);
 };
 
 io.on("connection", (socket) => {
-  // console.log("user connected");
-
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    // console.log(users);
     io.emit("getUsers", users);
   });
-  socket.on(
-    "sendNotificationComment",
-    ({
-      senderName,
-      senderFamily,
-      senderId,
-      receiverId,
-      videoName,
-      videoId,
-      courseid,
-    }) => {
-      const user = getUser(receiverId);
-      // console.log(receiverId);
-      // console.log(senderId);
-      // console.log(senderName);
-      // console.log(videoName);
-      // console.log(user);
 
-      // console.log(io.sockets.manager.roomClient[user.socketId]);
-      io.to(user?.socketId).emit("getNotificationComment", {
-        senderName,
-        senderFamily,
-        // senderId,
-        videoName,
-        courseid,
-        videoId,
+  socket.on("sendNotificationComment", ({
+    senderName,
+    senderFamily,
+    senderId,
+    receiverId,
+    videoName,
+    videoId,
+    courseid,
+  }) => {
+    const user = getUsersByUserId(receiverId);
+    if (user) {
+      user.socketIds.forEach((socketId) => {
+        io.to(socketId).emit("getNotificationComment", {
+          senderName,
+          senderFamily,
+          videoName,
+          courseid,
+          videoId,
+        });
       });
     }
-  );
+  });
 
   socket.on("sendMessage", ({ senderId, receiverId, userName, text }) => {
-    const user = getUser(receiverId);
-    // console.log(io.sockets.manager.roomClient[user.socketId]);
-    io.to(user?.socketId).emit("getMessage", {
-      senderId,
-      userName,
-      text,
-    });
+    const user = getUsersByUserId(receiverId);
+    if (user) {
+      user.socketIds.forEach((socketId) => {
+        io.to(socketId).emit("getMessage", {
+          senderId,
+          userName,
+          text,
+        });
+      });
+    }
   });
 
   socket.on("disconnect", () => {
@@ -111,6 +180,7 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
+
 
 app.use(cors());
 // app.use(express.json());
