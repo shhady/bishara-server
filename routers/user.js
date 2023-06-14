@@ -150,25 +150,18 @@ router.post("/users", async (req, res) => {
 
   const user = new User(req.body);
   if (password !== confirmPassword)
-    return res.status(404).json({ message: "passwords don't match" });
+    return res.status(404).json({ message: "جميع الحقول الزامية ويجب تطابق كلمة المرور وتأكيد كلمة المرور" });
     try {
       await user.save();
       const token = await user.generateAuthToken();
       res.status(201).send({ user, token });
     } catch (error) {
       if (error.code === 11000) {
-        res.status(400).send({ message: "email already in use" });
+        res.status(400).send({ message: "هذا الايميل قيد الاستخدام" });
       } else {
         res.status(400).send(error);
       }
     }
-  // try {
-  //   await user.save();
-  //   const token = await user.generateAuthToken();
-  //   res.status(201).send({ user, token });
-  // } catch (error) {
-  //   res.status(400).send(error);
-  // }
 });
 
 router.post("/users/login", async (req, res) => {
