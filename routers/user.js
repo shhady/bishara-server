@@ -150,7 +150,7 @@ router.post("/users", async (req, res) => {
 
   const user = new User(req.body);
   if (password !== confirmPassword)
-    return res.status(404).json({ message: "جميع الحقول الزامية ويجب تطابق كلمة المرور وتأكيد كلمة المرور" });
+    return res.status(404).json({ message: "يجب تطابق كلمة المرور وتأكيد كلمة المرور" });
     try {
       await user.save();
       const token = await user.generateAuthToken();
@@ -159,7 +159,7 @@ router.post("/users", async (req, res) => {
       if (error.code === 11000) {
         res.status(400).send({ message: "هذا الايميل قيد الاستخدام" });
       } else {
-        res.status(400).send(error);
+        res.status(400).send({ message: "جميع الحقول الزامية" });
       }
     }
 });
