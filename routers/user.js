@@ -22,11 +22,9 @@ function sendEmail(message) {
 }
 
 router.put("/resetPassword", async (req, res) => {
-  const { email } = req.body;
-
+  const email = req.body.email;
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(400).json({ error: "This email is not registered." });
     }
@@ -35,8 +33,8 @@ router.put("/resetPassword", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = hashedPassword;
-    user.confirmPassword = hashedPassword;
+    user.password = newPassword;
+    user.confirmPassword = newPassword;
     await user.save();
 
     const msg = {
@@ -172,40 +170,17 @@ router.post("/users", async (req, res) => {
     }
 });
 
-// router.post("/users/login", async (req, res) => {
-//   try {
-//     const user = await User.findByCredentials(
-//       req.body.email,
-//       req.body.password
-//     );
-//     const token = await user.generateAuthToken();
-
-//     res.send({ user, token });
-//   } catch (error) {
-//     res.status(400).send("invalid email or password");
-//   }
-// });
-
 router.post("/users/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).send("Invalid email or password");
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).send("Invalid email or password");
-    }
-
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password
+    );
     const token = await user.generateAuthToken();
 
     res.send({ user, token });
   } catch (error) {
-    res.status(500).send("Server error");
+    res.status(400).send("invalid email or password");
   }
 });
 
