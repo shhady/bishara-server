@@ -33,8 +33,8 @@ router.put("/resetPassword", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    user.password = hashedPassword;
-    user.confirmPassword = hashedPassword;
+    user.password = newPassword;
+    user.confirmPassword = newPassword;
     await user.save();
 
     const msg = {
