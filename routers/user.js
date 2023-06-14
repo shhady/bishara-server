@@ -22,9 +22,11 @@ function sendEmail(message) {
 }
 
 router.put("/resetPassword", async (req, res) => {
-  const email = req.body.email;
+  const { email } = req.body;
+
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).json({ error: "This email is not registered." });
     }
@@ -186,12 +188,15 @@ router.post("/users", async (req, res) => {
 
 router.post("/users/login", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).send("Invalid email or password");
     }
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(400).send("Invalid email or password");
     }
