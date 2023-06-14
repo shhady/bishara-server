@@ -8,74 +8,80 @@ import sharp from "sharp";
 import bcrypt from "bcryptjs";
 import sgMail from "@sendgrid/mail"
 
-// router.put("/resetPassword", async (req, res) => {
-//   const email = req.body.email
-//   try {
-//     const user = await User.findOne({ email: req.body.email });
-//     if (!user) {
-//       return res.status(400).send({ error: "This email is not registered." });
-//     }
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-//     const newPassword = Math.random().toString(36).slice(-8);
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(newPassword, salt);
+function sendEmail(message) {
+  sgMail
+    .send(message)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+}
 
-//     user.password = newPassword;
-//     user.confirmPassword = newPassword;
-//     await user.save();
-//     res.send({user:user, password: newPassword, hashed:hashedPassword});
-    
-//     const msg = {
-//       to: req.body.email,
-//       from: "bisharaweb@gmail.com", // change this to your sender email
-//       subject: "Password reset",
-//       text: `Your new password is ${newPassword}`,
-//     };
-
-//     sgMail.setApiKey(process.env.SENDGRID_API_KEY); // set your API 
-//     await sgMail.send(msg, (error) => {
-//       if (error) {
-//         return res.status(400).send({ error: "Could not send email." });
-//       } else {
-//         return res
-//           .status(200)
-//           .send({ message: "An email has been sent with the new password." });
-//       }
-//     });
-//   } catch (error) {
-//     res.status(500).send({ error: "Server error." });
-//   }
-// });
 router.put("/resetPassword", async (req, res) => {
   const email = req.body.email;
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).send({ error: "This email is not registered." });
+      return res.status(400).json({ error: "This email is not registered." });
     }
- 
+
     const newPassword = Math.random().toString(36).slice(-8);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
- 
-    user.password = newPassword;
-    user.confirmPassword = newPassword;
+
+    user.password = hashedPassword;
+    user.confirmPassword = hashedPassword;
     await user.save();
 
     const msg = {
       to: email,
-      from: "bisharaweb@gmail.com", // change this to your sender email
+      from: "bisharaweb@gmail.com",
       subject: "Password reset",
       text: `Your new password is ${newPassword}`,
     };
- 
-    await sgMail.send(msg);
-    return res.status(200).send({p:newPassword, message: "An email has been sent with the new password." });
+
+    sendEmail(msg);
+
+    return res.status(200).json({ message: "An email has been sent with the new password." });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ error: "Server error." });
+    return res.status(500).json({ error: "Server error." });
   }
 });
+// router.put("/resetPassword", async (req, res) => {
+//   const email = req.body.email;
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).send({ error: "This email is not registered." });
+//     }
+ 
+//     const newPassword = Math.random().toString(36).slice(-8);
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(newPassword, salt);
+ 
+//     user.password = newPassword;
+//     user.confirmPassword = newPassword;
+//     await user.save();
+
+//     const msg = {
+//       to: email,
+//       from: "bisharaweb@gmail.com", // change this to your sender email
+//       subject: "Password reset",
+//       text: `Your new password is ${newPassword}`,
+//     };
+ 
+//     await sgMail.send(msg);
+//     return res.status(200).send({p:newPassword, message: "An email has been sent with the new password." });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ error: "Server error." });
+//   }
+// });
 
  
 router.put("/paid", async (req, res) => {
