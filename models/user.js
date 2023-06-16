@@ -16,6 +16,9 @@ const userSchema = mongoose.Schema(
     paid:{type: String, default:false},
     paidDate:{type: Date},
     paidPeriod:{type:Number},
+    whereStudied:{type: String},
+    goal:{type: String},
+    experience:{type: String},
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
     email: {

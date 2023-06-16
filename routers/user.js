@@ -101,6 +101,24 @@ router.put("/paid", async (req, res) => {
     res.status(500).send({ error: "Server error." });
   }
 });
+router.put("/evaluation", async (req, res) => {
+  const { email, whereStudied, goal, experience } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send({ error: "This email is not registered." });
+    }
+    user.whereStudied = whereStudied;
+    user.goal=goal;
+    user.experience=experience;
+    await user.save();
+    res.send({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error." });
+  }
+});
+
 // router.post("/signin", signin);
 // router.post("/signup", signup);
 
