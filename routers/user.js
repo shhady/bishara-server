@@ -122,6 +122,7 @@ router.put('/trial', async (req, res) => {
       const updatedUser = await User.findById(user._id);
       if (updatedUser && updatedUser.trialTeacher === teacherId) {
         updatedUser.trialTeacher = null;
+        updatedUser.status = "trialEnd"
         await updatedUser.save();
       }
     }, millisecondsUntilExpiry);

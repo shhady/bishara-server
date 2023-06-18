@@ -13,6 +13,7 @@ import Practice from "./practice.js";
 // export default mongoose.model("User", userSchema);
 const userSchema = mongoose.Schema(
   {
+    status:{type: String, default:"noTrial"},
     trialTeacher:{type: String},
     trialDateStart:{type: Date},
     trialPeriod:{type:Number},
