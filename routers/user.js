@@ -115,8 +115,6 @@ router.put('/trial', async (req, res) => {
     user.trialDateStart = trialDateStart;
     user.trialPeriod = 7;
 
-    await user.save();
-
     const trialEndDate = moment(trialDateStart).add(7, 'days');
     const millisecondsUntilExpiry = trialEndDate.diff(moment());
 
@@ -130,6 +128,7 @@ router.put('/trial', async (req, res) => {
 
     const daysLeft = trialEndDate.diff(moment(), 'days');
     user.daysLeft = daysLeft;
+    await user.save();
 
     res.send({ user, daysLeft });
   } catch (error) {
@@ -137,6 +136,7 @@ router.put('/trial', async (req, res) => {
     res.status(500).send({ error: 'Server error.' });
   }
 });
+
 
 router.put("/evaluation", async (req, res) => {
   const { email, whereStudied, goal, experience } = req.body;
