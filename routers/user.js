@@ -7,6 +7,7 @@ import multer from "multer";
 import sharp from "sharp";
 import bcrypt from "bcryptjs";
 import sgMail from "@sendgrid/mail"
+import moment from 'moment';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
