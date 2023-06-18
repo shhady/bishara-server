@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema(
     trialTeacher:{type: String},
     trialDateStart:{type: Date},
     trialPeriod:{type:Number},
+    daysLeft:{type: Number},
     whereStudied:{type: String},
     goal:{type: String},
     experience:{type: String},
