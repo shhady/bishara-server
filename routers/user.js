@@ -101,21 +101,37 @@ router.put("/paid", async (req, res) => {
     res.status(500).send({ error: "Server error." });
   }
 });
-router.put("/trial", async (req, res) => {
-  const { email, teacherId, trialDateStart } = req.body;
+router.put('/trial', async (req, res) => {
   try {
+    const { email, teacherId, trialDateStart } = req.body;
+
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).send({ error: "This email is not registered." });
+      return res.status(400).send({ error: 'This email is not registered.' });
     }
+
     user.trialTeacher = teacherId;
-    user.trialDateStart=trialDateStart;
-    user.trialPeriod=7;
+    user.trialDateStart = trialDateStart;
+    user.trialPeriod = 7;
+
     await user.save();
+
+    // Set a timeout to reset trialTeacher after 7 days
+    const trialEndDate = moment(trialDateStart).add(7, 'days');
+    const millisecondsUntilExpiry = trialEndDate.diff(moment());
+
+    setTimeout(async () => {
+      const updatedUser = await User.findById(user._id);
+      if (updatedUser && updatedUser.trialTeacher === teacherId) {
+        updatedUser.trialTeacher = null;
+        await updatedUser.save();
+      }
+    }, millisecondsUntilExpiry);
+
     res.send({ user });
   } catch (error) {
     console.error(error);
-    res.status(500).send({ error: "Server error." });
+    res.status(500).send({ error: 'Server error.' });
   }
 });
 router.put("/evaluation", async (req, res) => {
