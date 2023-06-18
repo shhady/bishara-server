@@ -113,9 +113,9 @@ router.put('/trial', async (req, res) => {
 
     user.trialTeacher = teacherId;
     user.trialDateStart = trialDateStart;
-    user.trialPeriod = 7;
+    user.trialPeriod = 8;
 
-    const trialEndDate = moment(trialDateStart).add(7, 'days');
+    const trialEndDate = moment(trialDateStart).add(8, 'days');
     const millisecondsUntilExpiry = trialEndDate.diff(moment());
 
     setTimeout(async () => {
