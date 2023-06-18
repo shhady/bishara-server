@@ -129,7 +129,8 @@ router.put('/trial', async (req, res) => {
       }
     }, millisecondsUntilExpiry);
 
-    res.send({ user });
+    const daysLeft = trialEndDate.diff(moment(), 'days');
+    res.send({ user, daysLeft });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Server error.' });
