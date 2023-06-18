@@ -132,7 +132,7 @@ router.put('/trial', async (req, res) => {
     user.daysLeft = daysLeft;
     await user.save();
 
-    res.send({ user, daysLeft });
+    res.send({ user });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Server error.' });
