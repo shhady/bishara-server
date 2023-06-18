@@ -13,9 +13,9 @@ import Practice from "./practice.js";
 // export default mongoose.model("User", userSchema);
 const userSchema = mongoose.Schema(
   {
-    paid:{type: String, default:false},
-    paidDate:{type: Date},
-    paidPeriod:{type:Number},
+    trialTeacher:{type: String},
+    trialDateStart:{type: Date},
+    trialPeriod:{type:Number},
     whereStudied:{type: String},
     goal:{type: String},
     experience:{type: String},
