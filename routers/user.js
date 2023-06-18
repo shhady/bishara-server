@@ -101,6 +101,23 @@ router.put("/paid", async (req, res) => {
     res.status(500).send({ error: "Server error." });
   }
 });
+router.put("/trial", async (req, res) => {
+  const { email, teacherId, trialDateStart } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send({ error: "This email is not registered." });
+    }
+    user.trialTeacher = teacherId;
+    user.trialDateStart=trialDateStart;
+    user.trialPeriod=7;
+    await user.save();
+    res.send({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error." });
+  }
+});
 router.put("/evaluation", async (req, res) => {
   const { email, whereStudied, goal, experience } = req.body;
   try {
