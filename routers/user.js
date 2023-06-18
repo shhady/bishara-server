@@ -104,7 +104,7 @@ router.put("/resetPassword", async (req, res) => {
 // });
 router.put('/trial', async (req, res) => {
   try {
-    const { email, teacherId, trialDateStart } = req.body;
+    const { email, teacherId, trialDateStart , status} = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -114,6 +114,7 @@ router.put('/trial', async (req, res) => {
     user.trialTeacher = teacherId;
     user.trialDateStart = trialDateStart;
     user.trialPeriod = 8;
+    user.status = status;
 
     const trialEndDate = moment(trialDateStart).add(8, 'days');
     const millisecondsUntilExpiry = trialEndDate.diff(moment());
