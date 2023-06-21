@@ -1,7 +1,7 @@
 import SubscriptionPlan from '../models/subscriptionPlan.js';
 
 // Create a new subscription plan
-exports.createSubscriptionPlan = async (req, res) => {
+export const createSubscriptionPlan = async (req, res) => {
   try {
     const subscriptionPlan = await SubscriptionPlan.create(req.body);
     res.status(201).json(subscriptionPlan);
@@ -11,7 +11,7 @@ exports.createSubscriptionPlan = async (req, res) => {
 };
 
 // Get all subscription plans
-exports.getAllSubscriptionPlans = async (req, res) => {
+export const getAllSubscriptionPlans = async (req, res) => {
   try {
     const subscriptionPlans = await SubscriptionPlan.find();
     res.json(subscriptionPlans);
@@ -21,7 +21,7 @@ exports.getAllSubscriptionPlans = async (req, res) => {
 };
 
 // Get a single subscription plan by ID
-exports.getSubscriptionPlanById = async (req, res) => {
+export const getSubscriptionPlanById = async (req, res) => {
   try {
     const subscriptionPlan = await SubscriptionPlan.findById(req.params.id);
     if (!subscriptionPlan) {
@@ -34,7 +34,7 @@ exports.getSubscriptionPlanById = async (req, res) => {
 };
 
 // Update a subscription plan by ID
-exports.updateSubscriptionPlanById = async (req, res) => {
+export const updateSubscriptionPlanById = async (req, res) => {
   try {
     const subscriptionPlan = await SubscriptionPlan.findByIdAndUpdate(
       req.params.id,
@@ -51,7 +51,7 @@ exports.updateSubscriptionPlanById = async (req, res) => {
 };
 
 // Delete a subscription plan by ID
-exports.deleteSubscriptionPlanById = async (req, res) => {
+export const deleteSubscriptionPlanById = async (req, res) => {
   try {
     const subscriptionPlan = await SubscriptionPlan.findByIdAndRemove(
       req.params.id
