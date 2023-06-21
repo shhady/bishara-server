@@ -17,7 +17,7 @@ const subscriptionPlanSchema = new mongoose.Schema({
     required: true,
   },
   teacherId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
   status: {
