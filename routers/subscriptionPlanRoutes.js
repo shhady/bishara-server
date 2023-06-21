@@ -1,33 +1,23 @@
 import express from "express";
-const router = express.Router();
 import auth from "../middleware/authuser.js";
-import SubscriptionPlan from "../models/subscriptionPlan.js"
-// import subscriptionPlanController from '../controllers/subscriptionPlanController.js';
+import SubscriptionPlan from "../models/subscriptionPlan.js";
 
-// Create a new subscription plan
+const router = express.Router();
 
-  router.post("/subscription-plans", auth, (req, res) => {
-    //   const course = new Course(req.body);
+router.post("/subscription-plans", auth, async (req, res) => {
+  try {
+    const { period, teacherId } = req.body;
     const plan = new SubscriptionPlan({
-      ...req.body,
+      period,
+      teacherId,
+      dateStarted: new Date().toISOString(),
+      userId: req.user._id,
     });
-    try {
-        plan.save();
-      res.status(201).send(plan);
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  });
-// // Get all subscription plans
-// router.get('/', subscriptionPlanController.getAllSubscriptionPlans);
-
-// // Get a single subscription plan by ID
-// router.get('/:id', subscriptionPlanController.getSubscriptionPlanById);
-
-// // Update a subscription plan by ID
-// router.put('/:id', subscriptionPlanController.updateSubscriptionPlanById);
-
-// // Delete a subscription plan by ID
-// router.delete('/:id', subscriptionPlanController.deleteSubscriptionPlanById);
+    await plan.save();
+    res.status(201).send(plan);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 
 export default router;

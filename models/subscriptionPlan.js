@@ -18,7 +18,6 @@ const subscriptionPlanSchema = new mongoose.Schema({
   },
   teacherId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Teacher',
     required: true,
   },
   status: {
@@ -49,7 +48,9 @@ const subscriptionPlanSchema = new mongoose.Schema({
       }
     },
   },
-});
+},
+{ timestamps: true }
+);
 
 export default mongoose.model('SubscriptionPlan', subscriptionPlanSchema);
 
