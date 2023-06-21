@@ -7,6 +7,7 @@ import teacherRouter from "./routers/teacher.js";
 import courseRouter from "./routers/course.js";
 import practiceRouter from "./routers/practice.js";
 import fileRouter from "./routers/file.js";
+import subscriptionPlanRoutes from './routers/subscriptionPlanRoutes.js';
 
 import conversationRouter from "./routers/conversations.js";
 import messageRouter from "./routers/messages.js";
@@ -206,6 +207,7 @@ app.use(messageRouter);
 app.use(openconversationRouter);
 app.use(commentRouter);
 app.use(replyRouter);
+app.use(subscriptionPlanRoutes)
 const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.a3by20b.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
 mongoose
