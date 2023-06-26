@@ -4,19 +4,74 @@ import SubscriptionPlan from "../models/subscriptionPlan.js";
 
 const router = express.Router();
 
-router.post("/subscription-plans", auth, async (req, res) => {
+
+// Route for creating a new subscription plan
+router.post('/subscription-plans',auth, async (req, res) => {
   try {
-    const { period, teacherId } = req.body;
-    const plan = new SubscriptionPlan({
+    const { period, userId, teacherId } = req.body;
+    const dateStarted = new Date();
+
+    // Calculate the endDate based on the period
+    const endDate = new Date(dateStarted);
+    if (period === '6 months') {
+      endDate.setMonth(endDate.getMonth() + 6);
+    } else if (period === '1 year') {
+      endDate.setFullYear(endDate.getFullYear() + 1);
+    } else {
+      return res.status(400).json({ message: 'Invalid period specified' });
+    }
+
+    const subscriptionPlan = new SubscriptionPlan({
       period,
+      dateStarted,
+      endDate,
+      userId,
       teacherId,
-      dateStarted: new Date().toISOString(),
-      userId: req.user._id,
     });
-    await plan.save();
-    res.status(201).send(plan);
+
+    await subscriptionPlan.save();
+    res.status(201).json(subscriptionPlan);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).json({ message: 'Failed to create subscription plan', error });
+  }
+});
+
+// Route for updating an existing subscription plan
+router.put('/subscription-plans/:id',auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { period, userId, teacherId } = req.body;
+    const dateStarted = new Date();
+
+    // Calculate the endDate based on the period
+    const endDate = new Date(dateStarted);
+    if (period === '6 months') {
+      endDate.setMonth(endDate.getMonth() + 6);
+    } else if (period === '1 year') {
+      endDate.setFullYear(endDate.getFullYear() + 1);
+    } else {
+      return res.status(400).json({ message: 'Invalid period specified' });
+    }
+
+    const subscriptionPlan = await SubscriptionPlan.findByIdAndUpdate(
+      id,
+      {
+        period,
+        dateStarted,
+        endDate,
+        userId,
+        teacherId,
+      },
+      { new: true }
+    );
+
+    if (!subscriptionPlan) {
+      return res.status(404).json({ message: 'Subscription plan not found' });
+    }
+
+    res.json(subscriptionPlan);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update subscription plan', error });
   }
 });
 
@@ -48,30 +103,30 @@ router.get("/subscription-plans/:id", auth, async (req, res) => {
   });
   
   // Update a subscription plan
-  router.put("/subscription-plans/:id", auth, async (req, res) => {
-    try {
-      const { period, teacherId } = req.body;
-      const plan = await SubscriptionPlan.findOneAndUpdate(
-        {
-          _id: req.params.id,
-          userId: req.user._id,
-        },
-        {
-          period,
-          teacherId,
-        },
-        { new: true }
-      );
+  // router.put("/subscription-plans/:id", auth, async (req, res) => {
+  //   try {
+  //     const { period, teacherId } = req.body;
+  //     const plan = await SubscriptionPlan.findOneAndUpdate(
+  //       {
+  //         _id: req.params.id,
+  //         userId: req.user._id,
+  //       },
+  //       {
+  //         period,
+  //         teacherId,
+  //       },
+  //       { new: true }
+  //     );
   
-      if (!plan) {
-        return res.status(404).send();
-      }
+  //     if (!plan) {
+  //       return res.status(404).send();
+  //     }
   
-      res.send(plan);
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  });
+  //     res.send(plan);
+  //   } catch (error) {
+  //     res.status(400).send(error);
+  //   }
+  // });
   
   // Delete a subscription plan
   router.delete("/subscription-plans/:id", auth, async (req, res) => {
