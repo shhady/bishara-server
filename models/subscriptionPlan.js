@@ -20,6 +20,14 @@ const subscriptionPlanSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  userName: {
+    type: String,
+    required: true,
+  },
+  teacherName: {
+    type: String,
+    required: true,
+  },
   teacherId: {
     type: String,
     required: true,
