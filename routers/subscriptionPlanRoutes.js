@@ -8,7 +8,7 @@ const router = express.Router();
 // Route for creating a new subscription plan
 router.post('/subscription-plans',auth, async (req, res) => {
   try {
-    const { period, userId, teacherId } = req.body;
+    const { period, userId, teacherId, teacherName, userName } = req.body;
     const dateStarted = new Date();
 
     // Calculate the endDate based on the period
@@ -26,7 +26,7 @@ router.post('/subscription-plans',auth, async (req, res) => {
       dateStarted,
       endDate,
       userId,
-      teacherId,
+      teacherId,teacherName, userName
     });
 
     await subscriptionPlan.save();
