@@ -241,16 +241,22 @@ router.put("/practice/deleteRecordReply/:id", async (req, res) => {
   res.status(200).send({ practiceToUpdate, replyId });
 });
 
-router.put("/practice/videoReply/:id", async (req, res) => {
-  const replyId = req.body.replyId;
-  console.log(replyId);
-  const practiceToUpdate = await Practice.findOneAndUpdate(
-    { _id: req.params.id },
-    { $pull: { videoReply: { replyId: replyId } } }
-  );
-  await practiceToUpdate.save();
+router.put('/practice/videoReply/:id', async (req, res) => {
+  try {
+    const replyId = req.body.replyId;
+    console.log(replyId);
 
-  res.status(200).send({ practiceToUpdate, replyId });
+    const practiceToUpdate = await Practice.findOneAndUpdate(
+      { _id: req.params.id },
+      { $pull: { videoReply: { replyId: replyId } } }
+    );
+    await practiceToUpdate.save();
+
+    res.status(200).send({ practiceToUpdate, replyId });
+  } catch (error) {
+    console.error('Failed to delete video reply:', error);
+    res.status(500).json({ error: 'Failed to delete video reply' });
+  }
 });
 
 router.patch("/practices/:id", async (req, res) => {
