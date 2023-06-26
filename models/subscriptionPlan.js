@@ -11,6 +11,10 @@ const subscriptionPlanSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  endDate: {
+    type: Date,
+    required: true,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -22,35 +26,41 @@ const subscriptionPlanSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'trial', 'expired'],
-    default: function () {
-      const currentDate = new Date();
-      const startDate = new Date(this.dateStarted);
-      const endDate = new Date(startDate);
-
-      if (this.period === '6 months') {
-        endDate.setMonth(endDate.getMonth() + 6);
-      } else if (this.period === 'year') {
-        endDate.setFullYear(endDate.getFullYear() + 1);
-      }
-
-      if (currentDate <= endDate) {
-        const sevenDaysLater = new Date(startDate);
-        sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
-
-        if (currentDate <= sevenDaysLater) {
-          return 'trial';
-        } else {
-          return 'active';
-        }
-      } else {
-        return 'expired';
-      }
-    },
+    enum: ['active', 'expired'],
+    default: 'active',
   },
 },
 { timestamps: true }
 );
 
-export default mongoose.model('SubscriptionPlan', subscriptionPlanSchema);
+subscriptionPlanSchema.pre('save', function (next) {
+  const startDate = new Date(this.dateStarted);
+  if (this.period === '6 months') {
+    this.endDate = new Date(startDate.setMonth(startDate.getMonth() + 6));
+  } else if (this.period === 'year') {
+    this.endDate = new Date(startDate.setFullYear(startDate.getFullYear() + 1));
+  }
+  next();
+});
 
+subscriptionPlanSchema.statics.updateSubscriptionStatus = async function () {
+  const currentDate = new Date();
+  const subscriptionPlans = await this.find();
+
+  for (const plan of subscriptionPlans) {
+    if (currentDate > plan.endDate) {
+      plan.status = 'expired';
+    } else {
+      plan.status = 'active';
+    }
+  }
+
+  await Promise.all(subscriptionPlans.map(plan => plan.save()));
+};
+
+// Run the status update task every 24 hours (adjust the interval as needed)
+setInterval(async () => {
+  await subscriptionPlanSchema.statics.updateSubscriptionStatus();
+}, 24 * 60 * 60 * 1000);
+
+export default mongoose.model('SubscriptionPlan', subscriptionPlanSchema);
