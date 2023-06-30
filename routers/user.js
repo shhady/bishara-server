@@ -219,7 +219,7 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-router.patch("/users/:id",auth, async (req, res) => {
+router.patch("/users/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
@@ -244,14 +244,10 @@ router.patch("/users/:id",auth, async (req, res) => {
     return res.status(404).json({ message: "passwords don't match" });
 
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('subscriptionPlan');
 
     updates.forEach((update) => (user[update] = req.body[update]));
     await user.save();
-    // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
 
     if (!user) {
       res.status(404).send();
@@ -261,6 +257,7 @@ router.patch("/users/:id",auth, async (req, res) => {
     res.status(400).send(error);
   }
 });
+
 
 router.patch("/users/me", auth, async (req, res) => {
   const password = req.body.password;
