@@ -102,42 +102,6 @@ router.put("/resetPassword", async (req, res) => {
 //     res.status(500).send({ error: "Server error." });
 //   }
 // });
-router.put('/trial', async (req, res) => {
-  try {
-    const { email, teacherId, trialDateStart , status} = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).send({ error: 'This email is not registered.' });
-    }
-
-    user.trialTeacher = teacherId;
-    user.trialDateStart = trialDateStart;
-    user.trialPeriod = 8;
-    user.status = status;
-
-    const trialEndDate = moment(trialDateStart).add(8, 'days');
-    const millisecondsUntilExpiry = trialEndDate.diff(moment());
-
-    setTimeout(async () => {
-      const updatedUser = await User.findById(user._id);
-      if (updatedUser && updatedUser.trialTeacher === teacherId) {
-        updatedUser.trialTeacher = null;
-        updatedUser.status = "trialEnd"
-        await updatedUser.save();
-      }
-    }, millisecondsUntilExpiry);
-
-    const daysLeft = trialEndDate.diff(moment(), 'days');
-    user.daysLeft = daysLeft;
-    await user.save();
-
-    res.send({ user });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Server error.' });
-  }
-});
 
 
 router.put("/evaluation", async (req, res) => {
@@ -267,6 +231,7 @@ router.patch("/users/:id",auth, async (req, res) => {
     "lastName",
     "password",
     "confirmPassword",
+    "subscriptionPlan"
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
@@ -309,6 +274,7 @@ router.patch("/users/me", auth, async (req, res) => {
     "confirmPassword",
     "instrument",
     "avatar",
+    "subscriptionPlan"
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);

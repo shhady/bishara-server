@@ -3,26 +3,20 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Practice from "./practice.js";
-// const userSchema = mongoose.Schema({
-//   name: { type: String, required: true },
-//   email: { type: String, required: true },
-//   password: { type: String, required: true },
-//   id: { type: String, required: true },
-// });
+import SubscriptionPlan from "./subscriptionPlan.js";
 
-// export default mongoose.model("User", userSchema);
 const userSchema = mongoose.Schema(
   {
-    status:{type: String, default:"noTrial"},
-    trialTeacher:{type: String},
-    trialDateStart:{type: Date},
-    trialPeriod:{type:Number},
-    daysLeft:{type: Number},
-    whereStudied:{type: String},
-    goal:{type: String},
-    experience:{type: String},
+    status: { type: String },
+    whereStudied: { type: String },
+    goal: { type: String },
+    experience: { type: String },
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
+    subscriptionPlan: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SubscriptionPlan",
+    },
     email: {
       type: String,
       unique: true,
@@ -38,7 +32,6 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true, minlength: 5, trim: true },
     confirmPassword: { type: String, required: true, minlength: 5, trim: true },
     avatar: { type: String },
-    // instrument: { type: String, required: true },
     tokens: [
       {
         token: {
@@ -47,7 +40,6 @@ const userSchema = mongoose.Schema(
         },
       },
     ],
-    // avatar: { type: String },
   },
   {
     timestamps: true,
