@@ -8,6 +8,7 @@ const ReplySchema = mongoose.Schema({
   practiceId: { type: String },
   uniqueLink: { type: String },
   teacherId: { type: String },
+  replyId:{ type:String}
 });
 
 ReplySchema.statics.findManyByTeacherId = async function (teacherId) {

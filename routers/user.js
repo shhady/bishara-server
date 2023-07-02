@@ -248,7 +248,7 @@ router.patch("/users/:id", auth, async (req, res) => {
 
     updates.forEach((update) => (user[update] = req.body[update]));
     await user.save();
-
+    
     if (!user) {
       res.status(404).send();
     }

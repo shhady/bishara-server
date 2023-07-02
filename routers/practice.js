@@ -152,6 +152,7 @@ router.patch("/studentpractices/:id", async (req, res) => {
 //     res.status(404).send(error);
 //   }
 // });
+
 router.put("/practices/:id", async (req, res) => {
   const theVideoReply = req.body.theVideoReply;
   const videoName = req.body.videoName;
