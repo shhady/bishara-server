@@ -4,7 +4,6 @@ import SubscriptionPlan from "../models/subscriptionPlan.js";
 
 const router = express.Router();
 
-
 // Route for creating a new subscription plan
 router.post('/subscription-plans',auth, async (req, res) => {
   try {
