@@ -84,6 +84,14 @@ router.get("/subscription-plans", auth, async (req, res) => {
       res.status(500).send(error);
     }
   });
+  router.get("/subscription-plans/:teacherId", auth, async (req, res) => {
+    try {
+      const plans = await SubscriptionPlan.find({ teacherId: req.params.teacherId });
+      res.send(plans);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
   // Get a specific subscription plan by ID
 router.get("/subscription-plans/:id", auth, async (req, res) => {
     try {
