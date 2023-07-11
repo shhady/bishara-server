@@ -232,7 +232,8 @@ router.patch("/users/:id", auth, async (req, res) => {
     "lastName",
     "password",
     "confirmPassword",
-    "subscriptionPlan"
+    "subscriptionPlan",
+    "status"
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
@@ -272,7 +273,8 @@ router.patch("/users/me", auth, async (req, res) => {
     "confirmPassword",
     "instrument",
     "avatar",
-    "subscriptionPlan"
+    "subscriptionPlan",
+    "status"
   ];
   const isValidOperation = updates.every((update) => {
     return allowedUpdate.includes(update);
