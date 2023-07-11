@@ -105,7 +105,7 @@ router.put("/resetPassword", async (req, res) => {
 
 
 router.put("/evaluation", async (req, res) => {
-  const { email, whereStudied, goal, experience } = req.body;
+  const { email, whereStudied, goal, experience, status } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -114,6 +114,7 @@ router.put("/evaluation", async (req, res) => {
     user.whereStudied = whereStudied;
     user.goal=goal;
     user.experience=experience;
+    user.status = status;
     await user.save();
     res.send({ user });
   } catch (error) {

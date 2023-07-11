@@ -7,7 +7,7 @@ import SubscriptionPlan from "./subscriptionPlan.js";
 
 const userSchema = mongoose.Schema(
   {
-    status: { type: String },
+    status: { type: String, default:"canTry" },
     whereStudied: { type: String },
     goal: { type: String },
     experience: { type: String },
