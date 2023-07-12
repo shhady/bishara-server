@@ -7,16 +7,6 @@ const router = express.Router();
 // Configure SendGrid API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-async function sendEmail(message) {
-  try {
-    await sgMail.send(message);
-    console.log("Email sent");
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-}
-
 router.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -31,7 +21,7 @@ router.post('/send-email', async (req, res) => {
     await contact.save();
 
     const msg = {
-      to: 'bisharaweb@gmail.com',
+      to: 'bisharaweb@gmail.com', // Replace with the recipient email address
       from: email,
       subject: 'New Message from user',
       text: `
@@ -42,7 +32,7 @@ router.post('/send-email', async (req, res) => {
     };
 
     // Send the email using SendGrid
-    await sendEmail(msg);
+    await sgMail.send(msg);
 
     return res.status(200).json({ message: "An email has been sent." });
   } catch (error) {
