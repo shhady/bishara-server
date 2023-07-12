@@ -44,7 +44,7 @@ router.post('/send-email', async (req, res) => {
     // Send the email using SendGrid
     sendEmail(msg);
 
-    return res.status(200).json({ message: "An email has been sent." });
+    return res.status(200).json({ message: `An email has been sent.to 'bisharaweb@gmail.com' from ${email}, with message:${message} ` });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server error." });
