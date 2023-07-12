@@ -31,7 +31,7 @@ router.post('/send-email', async (req, res) => {
     await contact.save();
 
     const msg = {
-      to: 'bisharaweb@gmail.com', // Replace with the recipient email address
+      to: 'shhadyse@gmail.com', // Replace with the recipient email address
       from: email,
       subject: 'New Message from user',
       text: `
