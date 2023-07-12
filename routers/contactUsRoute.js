@@ -1,8 +1,7 @@
-const express = require('express');
-const sgMail = require('@sendgrid/mail');
-const Contact = require('../models/ContactUs.js');
-
+import express from "express";
 const router = express.Router();
+import sgMail from "@sendgrid/mail"
+import Contact from "../models/ContactUs.js";
 
 // Configure SendGrid API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
