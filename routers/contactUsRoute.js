@@ -6,6 +6,16 @@ import Contact from "../models/ContactUs.js";
 // Configure SendGrid API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+function sendEmail(message) {
+    sgMail
+      .send(message)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+      });
+  }
 router.post('/send-email', (req, res) => {
   const { name, email, message } = req.body;
 
@@ -31,15 +41,9 @@ router.post('/send-email', (req, res) => {
       };
 
       // Send the email using SendGrid
-      sgMail.send(msg)
-        .then(() => {
-          console.log('Email sent');
-          res.sendStatus(200);
-        })
-        .catch((error) => {
-          console.error('Error sending email:', error);
-          res.status(500).json({ error: 'Failed to send email' });
-        });
+      sendEmail(msg);
+      return res.status(200).json({ message: "An email has been sent." });
+
     })
     .catch(error => {
       console.error('Error saving contact:', error);
