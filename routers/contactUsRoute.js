@@ -16,8 +16,10 @@ function sendEmail(message) {
         console.error("Error sending email:", error);
       });
   }
-router.post('/send-email', (req, res) => {
+router.post('/send-email',async (req, res) => {
   const { name, email, message } = req.body;
+try{
+
 
   // Save the contact form submission to the database
   const contact = new Contact({
@@ -26,29 +28,26 @@ router.post('/send-email', (req, res) => {
     message,
   });
 
-  contact.save()
-    .then(() => {
-      // Prepare the email message
-      const msg = {
-        to: 'bisharaweb@gmail.com',
-        from: email,
-        subject: 'New Message from user',
-        text: `
-          Name: ${name}
-          Email: ${email}
-          Message: ${message}
-        `,
-      };
+  await contact.save()
+   
+  const msg = {
+    to: 'bisharaweb@gmail.com',
+    from: email,
+    subject: 'New Message from user',
+    text: `
+      Name: ${name}
+      Email: ${email}
+      Message: ${message}
+    `,
+  };
 
       // Send the email using SendGrid
       sendEmail(msg);
       return res.status(200).json({ message: "An email has been sent." });
-
-    })
-    .catch(error => {
-      console.error('Error saving contact:', error);
-      res.status(500).json({ error: 'Failed to save contact' });
-    });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Server error." });
+      }
 });
 
 export default router;
