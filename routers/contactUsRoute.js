@@ -32,7 +32,7 @@ router.post('/send-email', async (req, res) => {
 
     const msg = {
       to: 'bisharaweb@gmail.com', // Replace with the recipient email address
-      from: email,
+      from: "funan Web",
       subject: 'New Message from user',
       text: `
         Name: ${name}
