@@ -39,7 +39,7 @@ router.post('/subscription-plans',auth, async (req, res) => {
 router.put('/subscription-plans/:id',auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { period, userId, teacherId,teacherName } = req.body;
+    const { period, userId, teacherId,teacherName,status } = req.body;
     const dateStarted = new Date();
 
     // Calculate the endDate based on the period
@@ -60,7 +60,8 @@ router.put('/subscription-plans/:id',auth, async (req, res) => {
         endDate,
         userId,
         teacherId,
-        teacherName
+        teacherName,
+        status
       },
       { new: true }
     );
