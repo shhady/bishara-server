@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const subscriptionPlanSchema = new mongoose.Schema({
   period: {
     type: String,
-    enum: ['6 months', 'year'],
+    enum: ['6 months', 'year', '3 months'],
     required: true,
   },
   dateStarted: {
@@ -46,7 +46,10 @@ subscriptionPlanSchema.pre('save', function (next) {
   const startDate = new Date(this.dateStarted);
   if (this.period === '6 months') {
     this.endDate = new Date(startDate.setMonth(startDate.getMonth() + 6));
-  } else if (this.period === 'year') {
+  } else if (this.period === '3 months') {
+    this.endDate = new Date(startDate.setFullYear(startDate.getMonth() + 3));
+  }
+   else if (this.period === 'year') {
     this.endDate = new Date(startDate.setFullYear(startDate.getFullYear() + 1));
   }
   next();
