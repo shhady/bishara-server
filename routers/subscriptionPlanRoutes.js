@@ -14,7 +14,10 @@ router.post('/subscription-plans',auth, async (req, res) => {
     const endDate = new Date(dateStarted);
     if (period === '6 months') {
       endDate.setMonth(endDate.getMonth() + 6);
-    } else if (period === 'year') {
+    } else if(period === '3 months'){
+      endDate.setMonth(endDate.getMonth() + 3);
+    }
+     else if (period === 'year') {
       endDate.setFullYear(endDate.getFullYear() + 1);
     } else {
       return res.status(400).json({ message: 'Invalid period specified' });
@@ -46,7 +49,10 @@ router.put('/subscription-plans/:id',auth, async (req, res) => {
     const endDate = new Date(dateStarted);
     if (period === '6 months') {
       endDate.setMonth(endDate.getMonth() + 6);
-    } else if (period === 'year') {
+    }else if (period === '3 months') {
+      endDate.setMonth(endDate.getMonth() + 3);
+    } 
+    else if (period === 'year') {
       endDate.setFullYear(endDate.getFullYear() + 1);
     } else {
       return res.status(400).json({ message: 'Invalid period specified' });
