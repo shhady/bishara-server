@@ -40,78 +40,7 @@ app.get("/", (req, res) => {
 app.get("/", (req, res) => {
   res.send("backend is running");
 });
-// io.on("connection", () => {
-//   console.log("connected to websocket");
-// });
 
-// let users = [];
-// const addUser = (userId, socketId) => {
-//   !users.some((user) => user.userId === userId) &&
-//     users.push({ userId, socketId });
-// };
-// // console.log(users);
-// const removeUser = (socketId) => {
-//   users = users.filter((user) => user.socketId !== socketId);
-// };
-// const getUser = (userId) => {
-//   const selected = users.find((user) => user.userId == userId);
-//   // console.log(selected + "nowselected");
-//   return selected;
-// };
-
-// io.on("connection", (socket) => {
-//   // console.log("user connected");
-
-//   socket.on("addUser", (userId) => {
-//     addUser(userId, socket.id);
-//     // console.log(users);
-//     io.emit("getUsers", users);
-//   });
-//   socket.on(
-//     "sendNotificationComment",
-//     ({
-//       senderName,
-//       senderFamily,
-//       senderId,
-//       receiverId,
-//       videoName,
-//       videoId,
-//       courseid,
-//     }) => {
-//       const user = getUser(receiverId);
-//       // console.log(receiverId);
-//       // console.log(senderId);
-//       // console.log(senderName);
-//       // console.log(videoName);
-//       // console.log(user);
-
-//       // console.log(io.sockets.manager.roomClient[user.socketId]);
-//       io.to(user?.socketId).emit("getNotificationComment", {
-//         senderName,
-//         senderFamily,
-//         // senderId,
-//         videoName,
-//         courseid,
-//         videoId,
-//       });
-//     }
-//   );
-
-//   socket.on("sendMessage", ({ senderId, receiverId, userName, text }) => {
-//     const user = getUser(receiverId);
-//     // console.log(io.sockets.manager.roomClient[user.socketId]);
-//     io.to(user?.socketId).emit("getMessage", {
-//       senderId,
-//       userName,
-//       text,
-//     });
-//   });
-
-//   socket.on("disconnect", () => {
-//     removeUser(socket.id);
-//     io.emit("getUsers", users);
-//   });
-// });
 let users = [];
 
 const addUser = (userId, socketId) => {
@@ -193,10 +122,7 @@ app.use(
     parameterLimit: 50000000,
   })
 );
-// app.use(bodyParser.json({ limit: "10mb" }));
-// app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
-// app.use("/posts", postRoutes);
 app.use(userRouter);
 app.use(teacherRouter);
 app.use(courseRouter);
