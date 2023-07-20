@@ -219,7 +219,7 @@ router.get("/users/:id", async (req, res) => {
     res.status(500).send();
   }
 });
-
+// test
 router.patch("/users/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const password = req.body.password;
