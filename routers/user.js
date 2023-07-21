@@ -175,6 +175,10 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 router.post("/users", async (req, res) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  
+  if (password.length < 5) {
+    return res.status(400).json({ message: "كلمة المرور يجب أن تحتوي على 5 أحرف على الأقل" });
+  }
 
   const user = new User(req.body);
   if (password !== confirmPassword)
