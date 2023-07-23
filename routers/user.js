@@ -171,31 +171,36 @@ router.post("/users/logoutAll", auth, async (req, res) => {
     res.status(500).send();
   }
 });
-
 router.post("/users", async (req, res) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  
+
   if (password.length < 5) {
     return res.status(400).json({ message: "كلمة المرور يجب أن تحتوي على 5 أحرف على الأقل" });
   }
 
-  const user = new User(req.body);
   if (password !== confirmPassword)
     return res.status(404).json({ message: "يجب تطابق كلمة المرور وتأكيد كلمة المرور" });
-    try {
-      await user.save();
-      const token = await user.generateAuthToken();
-      res.status(201).send({ user, token });
-    } catch (error) {
-      if (error.code === 11000) {
-        res.status(400).send({ message: "هذا الايميل قيد الاستخدام" });
-      } else {
-        res.status(400).send({ message: "جميع الحقول الزامية" });
-      }
-    }
-});
 
+  const user = new User(req.body);
+
+  try {
+    // Save the user and handle any duplicate email errors
+    await user.save();
+
+    // Generate auth token and send the response
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
+  } catch (error) {
+    if (error.name === "MongoError" && error.code === 11000) {
+      // Duplicate key error, email already exists
+      return res.status(400).send({ message: "هذا الايميل قيد الاستخدام" });
+    } else {
+      // Other errors, such as validation errors
+      return res.status(400).send({ message: "جميع الحقول الزامية" });
+    }
+  }
+});
 router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
