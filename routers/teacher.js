@@ -62,7 +62,7 @@ router.put("/teachers/resetPassword", async (req, res) => {
      await teacher.save();
      const msg = {
        to: email,
-       from: "bisharaweb@gmail.com", // change this to your sender email
+       from: "funanmusic@gmail.com", // change this to your sender email
        subject: "Password reset",
        text: `Your new password is ${newPassword}`,
      };
