@@ -42,7 +42,7 @@ router.put("/resetPassword", async (req, res) => {
       to: email,
       from: "funanmusic@gmail.com",
       subject: "Password reset",
-      text: `كلمة المرور الجديدة ${newPassword}`,
+      text: `يمكنك تغييرها بعد الدخول الى الملف الشخصي وبعد ذلك تعديل الملف ${newPassword} كلمة المرور الجديدة `,
     };
 
     sendEmail(msg);
