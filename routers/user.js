@@ -40,7 +40,7 @@ router.put("/resetPassword", async (req, res) => {
 
     const msg = {
       to: email,
-      from: "funanmusic@gmail.com",
+      from: "bisharaweb@gmail.com",
       subject: "تغيير كلمة المرور",
       text: `يمكنك تغييرها بعد الدخول الى الملف الشخصي وبعد ذلك تعديل الملف ${newPassword} كلمة المرور الجديدة `,
     };
