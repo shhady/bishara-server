@@ -135,6 +135,36 @@ app.use(commentRouter);
 app.use(replyRouter);
 app.use(subscriptionPlanRoutes);
 app.use(contactRouter)
+
+
+
+app.post('/cardcom/webhook', (req, res) => {
+  const webhookData = req.body; // Assuming the incoming data is in JSON format
+
+  // Verify webhook signature (if applicable) - Check cardcom documentation for details
+
+  // Log the webhook data to see it in the Heroku logs
+  console.log('Received webhook data:', webhookData);
+
+  // Process the webhook data for cardcom policy
+  if (webhookData) {
+    // Handle cardcom policy based on the webhook data
+    // For example, update your database, trigger events, etc.
+
+    // Log any actions or data changes you are making
+    console.log('Handling cardcom policy:', webhookData);
+
+    // Respond with a success status to the webhook provider
+    res.status(200).end();
+  } else {
+    // Log the error
+    console.log('Invalid webhook data:', webhookData);
+
+    // Respond with an error status if the webhook data is invalid
+    res.status(400).end();
+  }
+});
+
 const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.a3by20b.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 5000;
 mongoose
