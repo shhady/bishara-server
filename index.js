@@ -154,8 +154,8 @@ app.post('/cardcom/webhook', (req, res) => {
     // Log any actions or data changes you are making
     console.log('Handling cardcom policy:', webhookData);
 
-    // Respond with a success status to the webhook provider
-    res.status(200).send('Webhook data processed successfully.', webhookData);
+    // Respond with a success status and the webhookData as a JSON response
+    res.status(200).json(webhookData);
   } else {
     // Log the error
     console.log('Invalid webhook data:', webhookData);
