@@ -36,7 +36,7 @@ router.post("/practices", async (req, res) => {
         subject: "New Practice Created",
         text: `A new practice has been created with the following details:
         Student Name: ${practice.studentFirstName} ${practice.studentLastName}
-        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `${practice.courseId}, ${practice.courseName}`}
+        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `Lesson: ${practice.courseName}, ${practice.video}`}
         please check the students practices and reply to him.
         `,  
       };
@@ -51,7 +51,7 @@ router.post("/practices", async (req, res) => {
       text: `A new practice has been created with the following details:
         Student Name: ${practice.studentFirstName} ${practice.studentLastName}
         teacher: ${practice.teacherFirstName} ${practice.teacherLastName}
-        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `${practice.courseId}, ${practice.courseName}`}
+        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `Lesson: ${practice.courseName}, ${practice.video}`}
         please check the students practices and reply to him
       `,
     };
