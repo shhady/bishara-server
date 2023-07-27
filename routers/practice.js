@@ -2,14 +2,58 @@ import express from "express";
 const router = express.Router();
 import Practice from "../models/practice.js";
 import auth from "../middleware/authuser.js";
-router.post("/practices", (req, res) => {
-  //   const course = new Course(req.body);
+import sgMail from "@sendgrid/mail";
+import Teacher from "../models/teacher.js";
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+function sendEmail(message) {
+  sgMail
+    .send(message)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+}
+router.post("/practices", async (req, res) => {
+  // The code to create a new practice
   const practice = new Practice({
     ...req.body,
     // owner: req.user._id,
   });
   try {
-    practice.save();
+    await practice.save();
+
+    // Find the teacher by teacherId from the Practice model
+    const teacher = await Teacher.findById(practice.teacherId);
+
+    // Send an email to the teacher's email
+    if (teacher) {
+      const teacherMsg = {
+        to: teacher.email,
+        from: "funanmusic@gmail.com",
+        subject: "New Practice Created",
+        text: `A new practice has been created with the following details:
+        Student Name: ${practice.studentFirstName} ${practice.studentLastName}
+        please check the students practices and reply to him
+        `,  
+      };
+      sendEmail(teacherMsg);
+    }
+
+    // Send an email to the hardcoded email
+    const hardcodedMsg = {
+      to: "funanmusic@gmail.com",
+      from: "funanmusic@gmail.com",
+      subject: "New Practice Created",
+      text: `A new practice has been created with the following details:
+        Student Name: ${practice.studentFirstName} ${practice.studentLastName}
+        please check the students practices and reply to him
+      `,
+    };
+    sendEmail(hardcodedMsg);
+
     res.status(201).send(practice);
   } catch (error) {
     res.status(400).send(error);
@@ -27,27 +71,6 @@ router.get("/practices", async (req, res) => {
     res.status(500).send(error);
   }
 });
-//**only the student can see his practices*****
-// router.get("/practices", auth, async (req, res) => {
-//   const match = {};
-//   try {
-//     const practices = await Practice.find({ owner: req.user._id }).sort({
-//       createdAt: -1,
-//     });
-// await req.user
-//   .populate({
-//     path: "practices",
-//     match,
-//     options: {
-//       limit: parseInt(req.query.limit),
-//     },
-//   })
-//   .execPopulate();
-//     res.status(200).send(practices);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
 
 router.get("/practices/:id", auth, async (req, res) => {
   const _id = req.params.id;
@@ -120,38 +143,6 @@ router.patch("/studentpractices/:id", async (req, res) => {
   }
 });
 
-// router.put("/practices/:id", async (req, res) => {
-//   const theVideoReply = req.body.theVideoReply;
-//   const videoName = req.body.videoName;
-//   const courseId = req.body.courseId;
-//   const nameOfProblem = req.body.nameOfProblem;
-//   const practiceId = req.body.practiceId;
-//   const uniqueLink = req.body.uniqueLink;
-//   const teacherId = req.body.teacherId;
-//   try {
-//     const videoReply = await Practice.findOneAndUpdate(
-//       { _id: req.params.id },
-//       {
-//         $push: {
-//           videoReply: {
-//             theVideoReply,
-//             videoName,
-//             courseId,
-//             nameOfProblem,
-//             practiceId,
-//             uniqueLink,
-//             teacherId,
-//           },
-//         },
-//       }
-//     );
-//     await videoReply.save();
-//     // console.log(firstName);
-//     res.status(200).send(videoReply);
-//   } catch (error) {
-//     res.status(404).send(error);
-//   }
-// });
 
 router.put("/practices/:id", async (req, res) => {
   const theVideoReply = req.body.theVideoReply;
