@@ -3,6 +3,7 @@ import express from "express";
 const router = express.Router();
 import User from "../models/user.js";
 import auth from "../middleware/authuser.js";
+import authT from "../middleware/authteacher.js"
 import multer from "multer";
 import sharp from "sharp";
 import bcrypt from "bcryptjs";
@@ -126,7 +127,7 @@ router.put("/evaluation", async (req, res) => {
 // router.post("/signin", signin);
 // router.post("/signup", signup);
 
-router.get("/users", auth, async (req, res) => {
+router.get("/users", authT, async (req, res) => {
   try {
     const users = await User.find({});
     res.status(200).send(users);
