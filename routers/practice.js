@@ -33,11 +33,15 @@ router.post("/practices", async (req, res) => {
       const teacherMsg = {
         to: teacher.email,
         from: "funanmusic@gmail.com",
-        subject: "New Practice Created",
-        text: `A new practice has been created with the following details:
-        Student Name: ${practice.studentFirstName} ${practice.studentLastName}
-        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `Lesson: ${practice.courseName}, ${practice.video}`}
-        please check the students practices and reply to him.
+        subject: "تم رفع تمرين",
+        text: `تم رفع تمرين:
+        اسم الطالب: ${practice.studentFirstName} ${practice.studentLastName}
+        ${practice.courseId === 'evaluation' ? `منهاج: 
+        الهدف: ${practice.goal},
+        اين تعلم: ${practice.whereStudied},
+        الخبره: ${practice.expTime}` : `الدرس: ${practice.courseName}, ${practice.video}`}
+        الرجاء الدخول الى صفحة تمارين الطلاب
+        www.funan.org
         `,  
       };
       sendEmail(teacherMsg);
@@ -47,13 +51,16 @@ router.post("/practices", async (req, res) => {
     const hardcodedMsg = {
       to: "funanmusic@gmail.com",
       from: "funanmusic@gmail.com",
-      subject: "New Practice Created",
-      text: `A new practice has been created with the following details:
-        Student Name: ${practice.studentFirstName} ${practice.studentLastName}
-        teacher: ${practice.teacherFirstName} ${practice.teacherLastName}
-        ${practice.courseId === 'evaluation' ? `${practice.courseId},${practice.goal},${practice.whereStudied}, ${practice.expTime}` : `Lesson: ${practice.courseName}, ${practice.video}`}
-        please check the students practices and reply to him
-      `,
+      subject: `تم رفع تمرين الى  ${practice.teacherFirstName} ${practice.teacherLastName}  `,
+      text: `تم رفع تمرين:
+      اسم الطالب: ${practice.studentFirstName} ${practice.studentLastName}
+        المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
+        ${practice.courseId === 'evaluation' ? `منهاج: 
+        الهدف: ${practice.goal},
+        اين تعلم: ${practice.whereStudied},
+        الخبره: ${practice.expTime}` : `الدرس: ${practice.courseName}, ${practice.video}`}
+        الرجاء الدخول الى صفحة تمارين الطلاب
+        www.funan.org      `,
     };
     sendEmail(hardcodedMsg);
 
