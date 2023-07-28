@@ -204,11 +204,10 @@ router.put("/practices/:id", async (req, res) => {
         to: user.email,
         from: "funanmusic@gmail.com",
         subject: `تم التعليق على عزفك من قبل ${practice.teacherFirstName} ${practice.teacherLastName}`,
-        text: `Hello ${user.firstName},
-          المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
-          هناك تعليق على الفيديو الذي قمت برفعه 
-          www.funan.org
-        `,
+        text: `مرحباً بك ${user.firstName},
+        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+       www.funan.org
+     `,
       };
       sgMail.send(userEmailMsg);
 
@@ -267,11 +266,10 @@ router.put("/practiceRec/:id", async (req, res) => {
         to: user.email,
         from: "funanmusic@gmail.com",
         subject: `تم التعليق على تمرينك من قبل ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}`,
-        text: `Hello ${user.firstName},
-          المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
-          هناك تعليق على الفيديو الذي قمت برفعه 
-          www.funan.org
-        `,
+        text: `مرحباً بك ${user.firstName},
+        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+       www.funan.org
+     `,
       };
       sgMail.send(userEmailMsg);
 
@@ -350,7 +348,12 @@ router.patch("/practices/:id", async (req, res) => {
       to: user.email,
       from: "funanmusic@gmail.com",
       subject: "Your practice has been updated",
-      text: `Hello ${user.firstName},\n\nYour practice has been successfully updated.\n\nBest regards,\nFunan Music Team`,
+      text: `مرحباً بك ${user.firstName},
+       هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+      www.funan.org
+    `
+      
+      ,
     };
     sgMail.send(userEmailMsg);
 
