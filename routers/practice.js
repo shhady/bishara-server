@@ -189,7 +189,7 @@ router.put("/practices/:id", async (req, res) => {
       return res.status(400).send({ error: "max four replies" });
     } else {
       // Find the ownerId from the Practice model
-      const ownerId = practice.owner;
+      const ownerId = practice.ownerId;
 
       // Use the ownerId to find the user from the User schema
       const user = await User.findOne({ _id: ownerId });
@@ -210,7 +210,7 @@ router.put("/practices/:id", async (req, res) => {
 
       await practice.save();
 
-      res.status(200).send(practice);
+      res.status(200).send({ practice, user })
     }
   } catch (error) {
     res.status(404).send(error);
