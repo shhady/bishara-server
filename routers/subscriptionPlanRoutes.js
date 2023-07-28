@@ -1,9 +1,20 @@
 import express from "express";
 import auth from "../middleware/authuser.js";
 import SubscriptionPlan from "../models/subscriptionPlan.js";
+import Teacher from "../models/teacher.js";
 
 const router = express.Router();
-
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+function sendEmail(message) {
+  sgMail
+    .send(message)
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((error) => {
+      console.error("Error sending email:", error);
+    });
+}
 // Route for creating a new subscription plan
 router.post('/subscription-plans',auth, async (req, res) => {
   try {
@@ -32,6 +43,20 @@ router.post('/subscription-plans',auth, async (req, res) => {
     });
 
     await subscriptionPlan.save();
+    const teacher = await Teacher.findById(practice.teacherId);
+    if (teacher) {
+      const teacherMsg = {
+        to: teacher.email,
+        from: "funanmusic@gmail.com",
+        subject: "new subscriber",
+        text: `
+          ${subscriptionPlan.userName}
+          اشترك لمدة ${subscriptionPlan.period}
+          تاريخ الدفع : ${subscriptionPlan.dateStarted}
+        `,  
+      };
+      sendEmail(teacherMsg);
+    }
     res.status(201).json(subscriptionPlan);
   } catch (error) {
     res.status(500).json({ message: 'Failed to create subscription plan', error });
