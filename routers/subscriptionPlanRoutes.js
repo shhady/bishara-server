@@ -43,7 +43,7 @@ router.post('/subscription-plans',auth, async (req, res) => {
     });
 
     await subscriptionPlan.save();
-    const teacher = await Teacher.findById(practice.teacherId);
+    const teacher = await Teacher.findById(teacherId);
     if (teacher) {
       const teacherMsg = {
         to: teacher.email,
