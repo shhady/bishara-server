@@ -205,7 +205,7 @@ router.put("/practices/:id", async (req, res) => {
         from: "funanmusic@gmail.com",
         subject: `تم التعليق على عزفك من قبل ${practice.teacherFirstName} ${practice.teacherLastName}`,
         text: `مرحباً بك ${user.firstName},
-        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
        www.funan.org
      `,
       };
@@ -230,7 +230,7 @@ router.put("/practiceRec/:id", async (req, res) => {
   const replyId = req.body.replyId;
   
   try {
-    const RecordReply = await Practice.findOneAndUpdate(
+    const practice = await Practice.findOneAndUpdate(
       { _id: req.params.id },
       {
         $push: {
@@ -247,11 +247,11 @@ router.put("/practiceRec/:id", async (req, res) => {
         },
       }
     );
-    if (RecordReply.RecordReply.length >= 2) {
+    if (practice.RecordReply.length >= 2) {
       return res.status(400).send({ error: "max two replies allowed" });
     } else {
       // Find the ownerId from the Practice model
-      const ownerId = RecordReply.ownerId;
+      const ownerId = practice.ownerId;
 
       // Use the ownerId to find the user from the User schema
       const user = await User.findOne({ _id: ownerId });
@@ -265,16 +265,16 @@ router.put("/practiceRec/:id", async (req, res) => {
       const userEmailMsg = {
         to: user.email,
         from: "funanmusic@gmail.com",
-        subject: `تم التعليق على تمرينك من قبل ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}`,
+        subject: `تم التعليق على تمرينك من قبل ${practice.teacherFirstName} ${practice.teacherLastName}`,
         text: `مرحباً بك ${user.firstName},
-        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
        www.funan.org
      `,
       };
       sgMail.send(userEmailMsg);
 
-      await RecordReply.save();
-      res.status(200).send({ RecordReply, user });
+      await practice.save();
+      res.status(200).send({ practice, user });
     }
   } catch (error) {
     res.status(404).send(error);
@@ -349,7 +349,7 @@ router.patch("/practices/:id", async (req, res) => {
       from: "funanmusic@gmail.com",
       subject: "Your practice has been updated",
       text: `مرحباً بك ${user.firstName},
-       هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+       هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
       www.funan.org
     `
       
