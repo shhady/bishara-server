@@ -1,20 +1,9 @@
 import express from "express";
 import auth from "../middleware/authuser.js";
 import SubscriptionPlan from "../models/subscriptionPlan.js";
-import Teacher from "../models/teacher.js";
 
 const router = express.Router();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-function sendEmail(message) {
-  sgMail
-    .send(message)
-    .then(() => {
-      console.log("Email sent");
-    })
-    .catch((error) => {
-      console.error("Error sending email:", error);
-    });
-}
+
 // Route for creating a new subscription plan
 router.post('/subscription-plans',auth, async (req, res) => {
   try {
@@ -41,25 +30,8 @@ router.post('/subscription-plans',auth, async (req, res) => {
       userId,
       teacherId,teacherName, userName
     });
-    // Fetch the teacher using the teacherId
-      const teacher = await Teacher.findById(teacherId);
-      if (!teacher) {
-       return res.status(404).json({ message: 'Teacher not found' });
-      }
-
-// Get the teacher's email from the teacher object
-        const teacherEmail = teacher.email;
 
     await subscriptionPlan.save();
-    // Send the email separately using an async function
-    const teacherMsg = {
-      to: teacherEmail,
-      from: "funanmusic@gmail.com",
-      subject: "New Subscription Plan Created",
-      text: `A new subscription plan has been created for you.\n\nPeriod: ${period}\nStart Date: ${dateStarted}\nEnd Date: ${endDate}\n\nThank you.`,
-    };
-    sendEmail(teacherMsg);
-
     res.status(201).json(subscriptionPlan);
   } catch (error) {
     res.status(500).json({ message: 'Failed to create subscription plan', error });
@@ -85,14 +57,6 @@ router.put('/subscription-plans/:id',auth, async (req, res) => {
     } else {
       return res.status(400).json({ message: 'Invalid period specified' });
     }
-// Fetch the teacher using the teacherId
-const teacher = await Teacher.findById(teacherId);
-if (!teacher) {
-  return res.status(404).json({ message: 'Teacher not found' });
-}
-
-// Get the teacher's email from the teacher object
-const teacherEmail = teacher.email;
 
     const subscriptionPlan = await SubscriptionPlan.findByIdAndUpdate(
       id,
