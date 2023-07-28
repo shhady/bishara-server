@@ -347,7 +347,7 @@ router.patch("/practices/:id", async (req, res) => {
     const userEmailMsg = {
       to: user.email,
       from: "funanmusic@gmail.com",
-      subject: "Your practice has been updated",
+      subject: `تم التعليق على تمرينك من قبل ${practice.teacherFirstName} ${practice.teacherLastName}`,
       text: `مرحباً بك ${user.firstName},
        هناك تعليق على الفيديو الذي قمت برفعه من قبل المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
       www.funan.org
