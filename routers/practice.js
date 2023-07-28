@@ -4,6 +4,7 @@ import Practice from "../models/practice.js";
 import auth from "../middleware/authuser.js";
 import sgMail from "@sendgrid/mail";
 import Teacher from "../models/teacher.js";
+import User from "../models/user.js";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 function sendEmail(message) {
@@ -167,7 +168,7 @@ router.put("/practices/:id", async (req, res) => {
   const teacherId = req.body.teacherId;
   const replyId = req.body.replyId;
   try {
-    const videoReply = await Practice.findOneAndUpdate(
+    const practice = await Practice.findOneAndUpdate(
       { _id: req.params.id },
       {
         $push: {
@@ -184,12 +185,32 @@ router.put("/practices/:id", async (req, res) => {
         },
       }
     );
-    if (videoReply.length >= 4) {
+    if (practice.videoReply.length >= 4) {
       return res.status(400).send({ error: "max four replies" });
     } else {
-      await videoReply.save();
-      // console.log(firstName);
-      res.status(200).send(videoReply);
+      // Find the ownerId from the Practice model
+      const ownerId = practice.owner;
+
+      // Use the ownerId to find the user from the User schema
+      const user = await User.findOne({ _id: ownerId });
+
+      // Check if the user exists
+      if (!user) {
+        return res.status(404).send({ error: "User not found" });
+      }
+
+      // Send an email to the user's email
+      const userEmailMsg = {
+        to: user.email,
+        from: "funanmusic@gmail.com",
+        subject: "Your video reply has been added",
+        text: `Hello ${user.firstName},\n\nYour video reply has been successfully added.\n\nBest regards,\nFunan Music Team`,
+      };
+      sgMail.send(userEmailMsg);
+
+      await practice.save();
+
+      res.status(200).send(practice);
     }
   } catch (error) {
     res.status(404).send(error);
