@@ -57,6 +57,19 @@ router.post('/subscription-plans',auth, async (req, res) => {
       };
       sendEmail(teacherMsg);
     }
+    const hardcodedMsg = {
+      to: "funanmusic@gmail.com",
+      from: "funanmusic@gmail.com",
+      subject: `طالب جديد لدى ${teacherName}`,
+      text: `
+      ${userName}
+      المعلم: ${teacherName}
+      اشترك لمدة ${period}
+      تاريخ الدفع : ${dateStarted}
+       `,
+    };
+    sendEmail(hardcodedMsg);
+
     res.status(201).json(subscriptionPlan);
   } catch (error) {
     res.status(500).json({ message: 'Failed to create subscription plan', error });
