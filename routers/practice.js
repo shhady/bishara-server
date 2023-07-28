@@ -40,6 +40,7 @@ router.post("/practices", async (req, res) => {
         الهدف: ${practice.goal},
         اين تعلم: ${practice.whereStudied},
         الخبره: ${practice.expTime}` : `الدرس: ${practice.courseName}, ${practice.video}`}
+        رابط الفيديو: ${practice.myPractice}
         الرجاء الدخول الى صفحة تمارين الطلاب
         www.funan.org
         `,  
@@ -59,6 +60,8 @@ router.post("/practices", async (req, res) => {
         الهدف: ${practice.goal},
         اين تعلم: ${practice.whereStudied},
         الخبره: ${practice.expTime}` : `الدرس: ${practice.courseName}, ${practice.video}`}
+        رابط الفيديو: ${practice.myPractice}
+
         الرجاء الدخول الى صفحة تمارين الطلاب
         www.funan.org      `,
     };
