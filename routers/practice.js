@@ -329,15 +329,32 @@ router.patch("/practices/:id", async (req, res) => {
 
     updates.forEach((update) => (practice[update] = req.body[update]));
     await practice.save();
-    // const practice = await practice.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
 
     if (!practice) {
-      res.status(404).send();
+      return res.status(404).send();
     }
-    res.send(practice);
+
+    // Find the ownerId from the Practice model
+    const ownerId = practice.ownerId;
+
+    // Use the ownerId to find the user from the User schema
+    const user = await User.findOne({ _id: ownerId });
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    // Send an email to the user's email
+    const userEmailMsg = {
+      to: user.email,
+      from: "funanmusic@gmail.com",
+      subject: "Your practice has been updated",
+      text: `Hello ${user.firstName},\n\nYour practice has been successfully updated.\n\nBest regards,\nFunan Music Team`,
+    };
+    sgMail.send(userEmailMsg);
+
+    res.send({ practice, user });
   } catch (error) {
     res.status(400).send(error);
   }
