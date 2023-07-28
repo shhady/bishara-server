@@ -2,7 +2,7 @@ import express from "express";
 import auth from "../middleware/authuser.js";
 import SubscriptionPlan from "../models/subscriptionPlan.js";
 import Teacher from "../models/teacher.js";
-
+import sgMail from "@sendgrid/mail";
 const router = express.Router();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 function sendEmail(message) {
