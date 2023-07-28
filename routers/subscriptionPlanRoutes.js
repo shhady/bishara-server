@@ -113,6 +113,32 @@ router.put('/subscription-plans/:id',auth, async (req, res) => {
     if (!subscriptionPlan) {
       return res.status(404).json({ message: 'Subscription plan not found' });
     }
+    const teacher = await Teacher.findById(teacherId);
+    if (teacher) {
+      const teacherMsg = {
+        to: teacher.email,
+        from: "funanmusic@gmail.com",
+        subject: "تجديد اشتراك",
+        text: `
+          ${userName}
+          تجديد لمدة ${period}
+          تاريخ الدفع : ${dateStarted}
+        `,  
+      };
+      sendEmail(teacherMsg);
+    }
+    const hardcodedMsg = {
+      to: "funanmusic@gmail.com",
+      from: "funanmusic@gmail.com",
+      subject: `"تجديد اشتراك" ${teacherName}`,
+      text: `
+      ${userName}
+      المعلم: ${teacherName}
+      اشترك لمدة ${period}
+      تاريخ الدفع : ${dateStarted}
+       `,
+    };
+    sendEmail(hardcodedMsg);
 
     res.json(subscriptionPlan);
   } catch (error) {
