@@ -203,8 +203,12 @@ router.put("/practices/:id", async (req, res) => {
       const userEmailMsg = {
         to: user.email,
         from: "funanmusic@gmail.com",
-        subject: "Your video reply has been added",
-        text: `Hello ${user.firstName},\n\nYour video reply has been successfully added.\n\nBest regards,\nFunan Music Team`,
+        subject: `تم التعليق على عزفك من قبل ${practice.teacherFirstName} ${practice.teacherLastName}`,
+        text: `Hello ${user.firstName},
+          المدرس: ${practice.teacherFirstName} ${practice.teacherLastName}
+          هناك تعليق على الفيديو الذي قمت برفعه 
+          www.funan.org
+        `,
       };
       sgMail.send(userEmailMsg);
 
@@ -225,6 +229,7 @@ router.put("/practiceRec/:id", async (req, res) => {
   const uniqueLink = req.body.uniqueLink;
   const teacherId = req.body.teacherId;
   const replyId = req.body.replyId;
+  
   try {
     const RecordReply = await Practice.findOneAndUpdate(
       { _id: req.params.id },
@@ -243,12 +248,35 @@ router.put("/practiceRec/:id", async (req, res) => {
         },
       }
     );
-    if (RecordReply.length >= 2) {
+    if (RecordReply.RecordReply.length >= 2) {
       return res.status(400).send({ error: "max two replies allowed" });
     } else {
+      // Find the ownerId from the Practice model
+      const ownerId = RecordReply.ownerId;
+
+      // Use the ownerId to find the user from the User schema
+      const user = await User.findOne({ _id: ownerId });
+
+      // Check if the user exists
+      if (!user) {
+        return res.status(404).send({ error: "User not found" });
+      }
+
+      // Send an email to the user's email
+      const userEmailMsg = {
+        to: user.email,
+        from: "funanmusic@gmail.com",
+        subject: `تم التعليق على تمرينك من قبل ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}`,
+        text: `Hello ${user.firstName},
+          المدرس: ${RecordReply.teacherFirstName} ${RecordReply.teacherLastName}
+          هناك تعليق على الفيديو الذي قمت برفعه 
+          www.funan.org
+        `,
+      };
+      sgMail.send(userEmailMsg);
+
       await RecordReply.save();
-      // console.log(firstName);
-      res.status(200).send(RecordReply);
+      res.status(200).send({ RecordReply, user });
     }
   } catch (error) {
     res.status(404).send(error);
