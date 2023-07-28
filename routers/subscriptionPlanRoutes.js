@@ -50,9 +50,9 @@ router.post('/subscription-plans',auth, async (req, res) => {
         from: "funanmusic@gmail.com",
         subject: "new subscriber",
         text: `
-          ${subscriptionPlan.userName}
-          اشترك لمدة ${subscriptionPlan.period}
-          تاريخ الدفع : ${subscriptionPlan.dateStarted}
+          ${userName}
+          اشترك لمدة ${period}
+          تاريخ الدفع : ${dateStarted}
         `,  
       };
       sendEmail(teacherMsg);
