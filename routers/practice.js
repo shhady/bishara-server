@@ -26,7 +26,7 @@ router.post("/upload", upload.single('file'), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
-
+    res.status(200).json({here: 'I got a file'})
     const result = await cloudinary.uploader.upload(req.file.buffer, {
       upload_preset: 'bisharaHaroni',
     });
