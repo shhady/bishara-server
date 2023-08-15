@@ -22,6 +22,7 @@ const upload = multer({ storage });
 
 // Your route for uploading the file
 router.post("/upload", upload.single('file'), async (req, res) => {
+  res.status(200).json({here: 'I got a file'})
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
