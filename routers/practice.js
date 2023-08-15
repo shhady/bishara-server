@@ -21,7 +21,7 @@ const storage = multer.memoryStorage(); // Store the file in memory
 const upload = multer({ storage });
 
 // Your route for uploading the file
-router.put("/upload", upload.single('file'), async (req, res) => {
+router.post("/upload", upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
