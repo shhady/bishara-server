@@ -5,47 +5,6 @@ import auth from "../middleware/authuser.js";
 import sgMail from "@sendgrid/mail";
 import Teacher from "../models/teacher.js";
 import User from "../models/user.js";
-import cloudinary from 'cloudinary';
-import multer from 'multer';
-import { v4 as uuid } from 'uuid';
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Set up multer storage
-const storage = multer.memoryStorage(); // Store the file in memory
-const upload = multer({ storage });
-
-// Your route for uploading the file
-router.post("/upload", upload.single('file'), async (req, res) => {
-  res.status(200).json({here: 'I got a file'})
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
-    res.status(200).json({here: 'I got a file'})
-    const result = await cloudinary.uploader.upload(req.file.buffer, {
-      upload_preset: 'bisharaHaroni',
-    });
-
-    // Send back the Cloudinary URL
-    res.status(200).json({ secure_url: result.secure_url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-
-
-
-
-
-
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 function sendEmail(message) {
@@ -420,8 +379,5 @@ router.delete("/practices/:id", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
-
-
 
 export default router;
