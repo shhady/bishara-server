@@ -165,7 +165,7 @@ app.post('/cardcom/webhook', (req, res) => {
   }
 });
 
-const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.a3by20b.mongodb.net/?retryWrites=true&w=majority`;
+const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster1.ywteut3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1`;
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
